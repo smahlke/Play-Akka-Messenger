@@ -18,4 +18,8 @@ public class Application extends Controller {
     public static Result trivial(String name) {
         return ok("Hello " + name);
     }
+    
+    public static Result test(String name) {
+        return ok("Hello " + name);
+    }
 }
