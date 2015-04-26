@@ -1,22 +1,22 @@
-New log file opened at Fri Apr 24 15:30:35 CEST 2015 by 1526@Sebastians-MacBook-Pro-2.local
-jvm 1526@Sebastians-MacBook-Pro-2.local
+New log file opened at Sun Apr 26 11:02:31 CEST 2015 by 12628@SebastiansMBP2.fritz.box
+jvm 12628@SebastiansMBP2.fritz.box
 jvm vmName=Java HotSpot(TM) 64-Bit Server VM vmVendor=Oracle Corporation vmVersion=25.31-b07
 jvm specName=Java Virtual Machine Specification specVendor=Oracle Corporation specVersion=1.8
 jvm arguments: [-Xms256m, -Xmx1024m, -XX:MetaspaceSize=64m, -XX:MaxMetaspaceSize=256m]
 Starting event engine
 Starting sbt command engine
-Waiting for sbt command engine
 Command engine arguments=List()
-Command engine baseDirectory=/Users/sebastianmahlke/Playframework/my-first-app
+Command engine baseDirectory=/Users/sebastianmahlke/Play-Akka-Messenger/my-first-app
+Waiting for sbt command engine
 Command engine initial remaining commands List(--initialize, onFailure load-failed, boot, server-send-ready-for-request, server-handle-next-server-request)
 > --initialize
 > initialize
 > onFailure load-failed
 > boot
 > reload
-[Loading] Scanning directory /Users/sebastianmahlke/Playframework/my-first-app/project
+[Loading] Scanning directory /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/project
 [Loading] Found non-root projects 
-[Loading] Done in /Users/sebastianmahlke/Playframework/my-first-app/project, returning: ()
+[Loading] Done in /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/project, returning: ()
 deducing auto plugins based on known facts Set(Atom(sbt.plugins.CorePlugin)) and clauses Clauses(List(Clause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.IvyPlugin))), Clause(Atom(sbt.plugins.JUnitXmlReportPlugin),Set(Atom(sbt.plugins.JvmPlugin))), Clause(Atom(sbt.plugins.CorePlugin),Set(Atom(sbt.plugins.IvyPlugin))), Clause(Atom(sbt.plugins.IvyPlugin),Set(Atom(sbt.plugins.JvmPlugin))), Clause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.JUnitXmlReportPlugin)))))
   :: deduced result: Matched(sbt.plugins.CorePlugin,sbt.plugins.IvyPlugin,sbt.plugins.JvmPlugin,sbt.plugins.JUnitXmlReportPlugin)
 sorting: ns: List(sbt.plugins.CorePlugin, sbt.plugins.IvyPlugin, sbt.plugins.JvmPlugin, sbt.plugins.JUnitXmlReportPlugin)
@@ -25,11 +25,11 @@ sorting: ns: List(sbt.plugins.CorePlugin, sbt.plugins.IvyPlugin, sbt.plugins.Jvm
   :: sorting:: found: List(sbt.plugins.CorePlugin, sbt.plugins.IvyPlugin, sbt.plugins.JvmPlugin) not found List(sbt.plugins.JUnitXmlReportPlugin)
   :: sorting:: found: List(sbt.plugins.CorePlugin, sbt.plugins.IvyPlugin, sbt.plugins.JvmPlugin, sbt.plugins.JUnitXmlReportPlugin) not found List()
   :: sorted deduced result: List(sbt.plugins.CorePlugin, sbt.plugins.IvyPlugin, sbt.plugins.JvmPlugin, sbt.plugins.JUnitXmlReportPlugin)
-[Loading] Done in /Users/sebastianmahlke/Playframework/my-first-app/project, returning: (my-first-app-build)
-Loading project definition from /Users/sebastianmahlke/Playframework/my-first-app/project
-Running task... Cancel: sbt.TaskCancellationStrategy$Null$@227de0c6, check cycles: false
-[info] Updating {file:/Users/sebastianmahlke/Playframework/my-first-app/project/}my-first-app-build...
-Updating {file:/Users/sebastianmahlke/Playframework/my-first-app/project/}my-first-app-build...
+[Loading] Done in /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/project, returning: (my-first-app-build)
+Loading project definition from /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/project
+Running task... Cancel: sbt.TaskCancellationStrategy$Null$@608d00e0, check cycles: false
+[info] Updating {file:/Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/project/}my-first-app-build...
+Updating {file:/Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/project/}my-first-app-build...
 Other repositories:
 Default repositories:
 Using inline dependencies specified in Scala.
@@ -16307,21 +16307,21 @@ sbt-chain: module revision found in cache: org.fusesource.jansi#jansi;1.4
 	[NOT REQUIRED] org.scala-sbt#apply-macro;0.13.8-M3!apply-macro.jar
 	[NOT REQUIRED] org.scala-lang#jline;2.10.4!jline.jar
 	[NOT REQUIRED] org.fusesource.jansi#jansi;1.4!jansi.jar
-:: resolution report :: resolve 10128ms :: artifacts dl 177ms
-	report for default#my-first-app-build;0.1-SNAPSHOT compile produced in /Users/sebastianmahlke/Playframework/my-first-app/project/target/resolution-cache/reports/default-my-first-app-build-compile.xml
-	report for default#my-first-app-build;0.1-SNAPSHOT runtime produced in /Users/sebastianmahlke/Playframework/my-first-app/project/target/resolution-cache/reports/default-my-first-app-build-runtime.xml
-	report for default#my-first-app-build;0.1-SNAPSHOT test produced in /Users/sebastianmahlke/Playframework/my-first-app/project/target/resolution-cache/reports/default-my-first-app-build-test.xml
-	report for default#my-first-app-build;0.1-SNAPSHOT provided produced in /Users/sebastianmahlke/Playframework/my-first-app/project/target/resolution-cache/reports/default-my-first-app-build-provided.xml
-	report for default#my-first-app-build;0.1-SNAPSHOT optional produced in /Users/sebastianmahlke/Playframework/my-first-app/project/target/resolution-cache/reports/default-my-first-app-build-optional.xml
-	report for default#my-first-app-build;0.1-SNAPSHOT compile-internal produced in /Users/sebastianmahlke/Playframework/my-first-app/project/target/resolution-cache/reports/default-my-first-app-build-compile-internal.xml
-	report for default#my-first-app-build;0.1-SNAPSHOT runtime-internal produced in /Users/sebastianmahlke/Playframework/my-first-app/project/target/resolution-cache/reports/default-my-first-app-build-runtime-internal.xml
-	report for default#my-first-app-build;0.1-SNAPSHOT test-internal produced in /Users/sebastianmahlke/Playframework/my-first-app/project/target/resolution-cache/reports/default-my-first-app-build-test-internal.xml
-	report for default#my-first-app-build;0.1-SNAPSHOT plugin produced in /Users/sebastianmahlke/Playframework/my-first-app/project/target/resolution-cache/reports/default-my-first-app-build-plugin.xml
-	report for default#my-first-app-build;0.1-SNAPSHOT sources produced in /Users/sebastianmahlke/Playframework/my-first-app/project/target/resolution-cache/reports/default-my-first-app-build-sources.xml
-	report for default#my-first-app-build;0.1-SNAPSHOT docs produced in /Users/sebastianmahlke/Playframework/my-first-app/project/target/resolution-cache/reports/default-my-first-app-build-docs.xml
-	report for default#my-first-app-build;0.1-SNAPSHOT pom produced in /Users/sebastianmahlke/Playframework/my-first-app/project/target/resolution-cache/reports/default-my-first-app-build-pom.xml
-	report for default#my-first-app-build;0.1-SNAPSHOT scala-tool produced in /Users/sebastianmahlke/Playframework/my-first-app/project/target/resolution-cache/reports/default-my-first-app-build-scala-tool.xml
-	resolve done (10128ms resolve - 177ms download)
+:: resolution report :: resolve 14810ms :: artifacts dl 272ms
+	report for default#my-first-app-build;0.1-SNAPSHOT compile produced in /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/project/target/resolution-cache/reports/default-my-first-app-build-compile.xml
+	report for default#my-first-app-build;0.1-SNAPSHOT runtime produced in /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/project/target/resolution-cache/reports/default-my-first-app-build-runtime.xml
+	report for default#my-first-app-build;0.1-SNAPSHOT test produced in /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/project/target/resolution-cache/reports/default-my-first-app-build-test.xml
+	report for default#my-first-app-build;0.1-SNAPSHOT provided produced in /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/project/target/resolution-cache/reports/default-my-first-app-build-provided.xml
+	report for default#my-first-app-build;0.1-SNAPSHOT optional produced in /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/project/target/resolution-cache/reports/default-my-first-app-build-optional.xml
+	report for default#my-first-app-build;0.1-SNAPSHOT compile-internal produced in /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/project/target/resolution-cache/reports/default-my-first-app-build-compile-internal.xml
+	report for default#my-first-app-build;0.1-SNAPSHOT runtime-internal produced in /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/project/target/resolution-cache/reports/default-my-first-app-build-runtime-internal.xml
+	report for default#my-first-app-build;0.1-SNAPSHOT test-internal produced in /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/project/target/resolution-cache/reports/default-my-first-app-build-test-internal.xml
+	report for default#my-first-app-build;0.1-SNAPSHOT plugin produced in /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/project/target/resolution-cache/reports/default-my-first-app-build-plugin.xml
+	report for default#my-first-app-build;0.1-SNAPSHOT sources produced in /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/project/target/resolution-cache/reports/default-my-first-app-build-sources.xml
+	report for default#my-first-app-build;0.1-SNAPSHOT docs produced in /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/project/target/resolution-cache/reports/default-my-first-app-build-docs.xml
+	report for default#my-first-app-build;0.1-SNAPSHOT pom produced in /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/project/target/resolution-cache/reports/default-my-first-app-build-pom.xml
+	report for default#my-first-app-build;0.1-SNAPSHOT scala-tool produced in /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/project/target/resolution-cache/reports/default-my-first-app-build-scala-tool.xml
+	resolve done (14810ms resolve - 272ms download)
 [info] Done updating.
 Done updating.
 
@@ -16342,7 +16342,7 @@ All initially invalidated sources: Set()
 
 Copy resource mappings: 
 	
-[Loading] Scanning directory /Users/sebastianmahlke/Playframework/my-first-app
+[Loading] Scanning directory /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app
 [Loading] Found root project root w/ remaining 
 deducing auto plugins based on known facts Set(Atom(play.PlayJava), Atom(sbt.plugins.CorePlugin)) and clauses Clauses(List(Clause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.IvyPlugin))), Clause(Atom(sbt.plugins.JUnitXmlReportPlugin),Set(Atom(sbt.plugins.JvmPlugin))), Clause(Atom(play.sbt.forkrun.PlayForkRun),Set(Atom(sbt.plugins.BackgroundRunPlugin))), Clause(Atom(play.sbt.forkrun.PlayForkRun),Set(Atom(play.Play))), Clause(Atom(play.sbt.forkrun.PlayForkRun),Set(Atom(sbt.plugins.SerializersPlugin))), Clause(Atom(play.Play),Set(Atom(com.typesafe.sbt.webdriver.SbtWebDriver))), Clause(Atom(play.Play),Set(Atom(play.twirl.sbt.SbtTwirl))), Clause(Atom(play.Play),Set(Atom(com.typesafe.sbt.jse.SbtJsTask))), Clause(Atom(play.PlayJava),Set(Atom(play.Play))), Clause(Atom(play.PlayScala),Set(Atom(play.Play))), Clause(Atom(play.twirl.sbt.SbtTwirl),Set(Atom(sbt.plugins.JvmPlugin))), Clause(Atom(com.typesafe.sbt.jse.SbtJsEngine),Set(Atom(com.typesafe.sbt.web.SbtWeb))), Clause(Atom(com.typesafe.sbt.jse.SbtJsTask),Set(Atom(com.typesafe.sbt.jse.SbtJsEngine))), Clause(Atom(com.typesafe.sbt.webdriver.SbtWebDriver),Set(Atom(com.typesafe.sbt.web.SbtWeb))), Clause(Atom(sbt.plugins.BackgroundRunPlugin),Set(Atom(sbt.plugins.JvmPlugin))), Clause(Atom(com.typesafe.sbt.coffeescript.SbtCoffeeScript),Set(Atom(com.typesafe.sbt.jse.SbtJsTask))), Clause(Atom(com.typesafe.sbt.less.SbtLess),Set(Atom(com.typesafe.sbt.jse.SbtJsTask))), Clause(Atom(com.typesafe.sbt.jshint.SbtJSHint),Set(Atom(com.typesafe.sbt.jse.SbtJsTask))), Clause(Atom(com.typesafe.sbt.rjs.SbtRjs),Set(Atom(com.typesafe.sbt.jse.SbtJsTask))), Clause(Atom(com.typesafe.sbt.digest.SbtDigest),Set(Atom(com.typesafe.sbt.web.SbtWeb))), Clause(Atom(com.typesafe.sbt.mocha.SbtMocha),Set(Atom(com.typesafe.sbt.jse.SbtJsTask))), Clause(Atom(sbt.plugins.CorePlugin),Set(Atom(sbt.plugins.IvyPlugin))), Clause(Atom(sbt.plugins.IvyPlugin),Set(Atom(sbt.plugins.JvmPlugin))), Clause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.JUnitXmlReportPlugin))), Clause(And(Set(Atom(sbt.plugins.BackgroundRunPlugin), Atom(play.Play), Atom(sbt.plugins.SerializersPlugin))),Set(Atom(play.sbt.forkrun.PlayForkRun))), Clause(Atom(com.typesafe.sbt.web.SbtWeb),Set(Atom(com.typesafe.sbt.jse.SbtJsEngine))), Clause(Atom(com.typesafe.sbt.jse.SbtJsEngine),Set(Atom(com.typesafe.sbt.jse.SbtJsTask))), Clause(Atom(com.typesafe.sbt.web.SbtWeb),Set(Atom(com.typesafe.sbt.webdriver.SbtWebDriver))), Clause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.BackgroundRunPlugin))), Clause(Atom(sbt.plugins.CorePlugin),Set(Atom(sbt.plugins.InteractionServicePlugin))), Clause(Atom(sbt.plugins.CorePlugin),Set(Atom(sbt.plugins.SendEventServicePlugin))), Clause(Atom(sbt.plugins.CorePlugin),Set(Atom(sbt.plugins.SerializersPlugin))), Clause(Atom(com.typesafe.sbt.jse.SbtJsTask),Set(Atom(com.typesafe.sbt.coffeescript.SbtCoffeeScript))), Clause(Atom(com.typesafe.sbt.jse.SbtJsTask),Set(Atom(com.typesafe.sbt.less.SbtLess))), Clause(Atom(com.typesafe.sbt.jse.SbtJsTask),Set(Atom(com.typesafe.sbt.jshint.SbtJSHint))), Clause(Atom(com.typesafe.sbt.jse.SbtJsTask),Set(Atom(com.typesafe.sbt.rjs.SbtRjs))), Clause(Atom(com.typesafe.sbt.web.SbtWeb),Set(Atom(com.typesafe.sbt.digest.SbtDigest))), Clause(Atom(com.typesafe.sbt.jse.SbtJsTask),Set(Atom(com.typesafe.sbt.mocha.SbtMocha)))))
   :: deduced result: Matched(sbt.plugins.CorePlugin,play.PlayJava,sbt.plugins.InteractionServicePlugin,sbt.plugins.SendEventServicePlugin,play.Play,sbt.plugins.SerializersPlugin,sbt.plugins.IvyPlugin,sbt.plugins.JvmPlugin,com.typesafe.sbt.jse.SbtJsTask,play.twirl.sbt.SbtTwirl,com.typesafe.sbt.webdriver.SbtWebDriver,com.typesafe.sbt.jshint.SbtJSHint,sbt.plugins.JUnitXmlReportPlugin,com.typesafe.sbt.mocha.SbtMocha,com.typesafe.sbt.less.SbtLess,com.typesafe.sbt.web.SbtWeb,com.typesafe.sbt.rjs.SbtRjs,com.typesafe.sbt.jse.SbtJsEngine,com.typesafe.sbt.coffeescript.SbtCoffeeScript,sbt.plugins.BackgroundRunPlugin,com.typesafe.sbt.digest.SbtDigest,play.sbt.forkrun.PlayForkRun)
@@ -16354,18 +16354,18 @@ sorting: ns: List(sbt.plugins.CorePlugin, play.PlayJava, sbt.plugins.Interaction
   :: sorting:: found: List(sbt.plugins.CorePlugin, com.typesafe.sbt.web.SbtWeb, sbt.plugins.InteractionServicePlugin, sbt.plugins.SendEventServicePlugin, sbt.plugins.SerializersPlugin, sbt.plugins.IvyPlugin, com.typesafe.sbt.webdriver.SbtWebDriver, com.typesafe.sbt.jse.SbtJsEngine, com.typesafe.sbt.digest.SbtDigest, sbt.plugins.JvmPlugin, com.typesafe.sbt.jse.SbtJsTask, play.twirl.sbt.SbtTwirl, com.typesafe.sbt.jshint.SbtJSHint, sbt.plugins.JUnitXmlReportPlugin, com.typesafe.sbt.mocha.SbtMocha, com.typesafe.sbt.less.SbtLess, com.typesafe.sbt.rjs.SbtRjs, com.typesafe.sbt.coffeescript.SbtCoffeeScript, sbt.plugins.BackgroundRunPlugin, play.Play) not found List(play.PlayJava, play.sbt.forkrun.PlayForkRun)
   :: sorting:: found: List(sbt.plugins.CorePlugin, com.typesafe.sbt.web.SbtWeb, sbt.plugins.InteractionServicePlugin, sbt.plugins.SendEventServicePlugin, sbt.plugins.SerializersPlugin, sbt.plugins.IvyPlugin, com.typesafe.sbt.webdriver.SbtWebDriver, com.typesafe.sbt.jse.SbtJsEngine, com.typesafe.sbt.digest.SbtDigest, sbt.plugins.JvmPlugin, com.typesafe.sbt.jse.SbtJsTask, play.twirl.sbt.SbtTwirl, com.typesafe.sbt.jshint.SbtJSHint, sbt.plugins.JUnitXmlReportPlugin, com.typesafe.sbt.mocha.SbtMocha, com.typesafe.sbt.less.SbtLess, com.typesafe.sbt.rjs.SbtRjs, com.typesafe.sbt.coffeescript.SbtCoffeeScript, sbt.plugins.BackgroundRunPlugin, play.Play, play.PlayJava, play.sbt.forkrun.PlayForkRun) not found List()
   :: sorted deduced result: List(sbt.plugins.CorePlugin, com.typesafe.sbt.web.SbtWeb, sbt.plugins.InteractionServicePlugin, sbt.plugins.SendEventServicePlugin, sbt.plugins.SerializersPlugin, sbt.plugins.IvyPlugin, com.typesafe.sbt.webdriver.SbtWebDriver, com.typesafe.sbt.jse.SbtJsEngine, com.typesafe.sbt.digest.SbtDigest, sbt.plugins.JvmPlugin, com.typesafe.sbt.jse.SbtJsTask, play.twirl.sbt.SbtTwirl, com.typesafe.sbt.jshint.SbtJSHint, sbt.plugins.JUnitXmlReportPlugin, com.typesafe.sbt.mocha.SbtMocha, com.typesafe.sbt.less.SbtLess, com.typesafe.sbt.rjs.SbtRjs, com.typesafe.sbt.coffeescript.SbtCoffeeScript, sbt.plugins.BackgroundRunPlugin, play.Play, play.PlayJava, play.sbt.forkrun.PlayForkRun)
-[Loading] Done in /Users/sebastianmahlke/Playframework/my-first-app, returning: (root)
-Set current project to Play-Messenger-App (in build file:/Users/sebastianmahlke/Playframework/my-first-app/)
+[Loading] Done in /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app, returning: (root)
+Set current project to Play-Messenger-App (in build file:/Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/)
 Reapplying settings...
-Set current project to Play-Messenger-App (in build file:/Users/sebastianmahlke/Playframework/my-first-app/)
+Set current project to Play-Messenger-App (in build file:/Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/)
 > iflast shell
 > server-send-ready-for-request
 > server-handle-next-server-request
-> {file:/Users/sebastianmahlke/Playframework/my-first-app/}root/*:playForkConfig
+> {file:/Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/}root/*:playForkConfig
 Evaluating tasks: *:playForkConfig
-Running task... Cancel: sbt.server.ServerTaskCancellation@38b1e610, check cycles: false
-Read from stdout: Updating {file:/Users/sebastianmahlke/Playframework/my-first-app/}root...
-Updating {file:/Users/sebastianmahlke/Playframework/my-first-app/}root...
+Running task... Cancel: sbt.server.ServerTaskCancellation@758db995, check cycles: false
+Read from stdout: Updating {file:/Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/}root...
+Updating {file:/Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/}root...
 Other repositories:
 Default repositories:
 Using inline dependencies specified in Scala.
@@ -16378,7 +16378,7 @@ resolving dependencies for configuration 'compile'
 == resolving dependencies play-messenger-app#play-messenger-app_2.11;1.0-SNAPSHOT->org.scala-lang#scala-library;2.11.1 [compile->default(compile)]
 Read from stdout: Resolving org.scala-lang#scala-library;2.11.1 ...
 Resolving org.scala-lang#scala-library;2.11.1 ...
-sbt-chain: Checking cache for: sbt.ivyint.MergedDescriptors@5a65458b
+sbt-chain: Checking cache for: sbt.ivyint.MergedDescriptors@4fec72c0
 sbt-chain: module revision found in cache: org.scala-lang#scala-library;2.11.1
 	found org.scala-lang#scala-library;2.11.1 in sbt-chain
 	[2.11.1] org.scala-lang#scala-library;2.11.1
@@ -23936,36 +23936,88 @@ all callers are evicted for commons-logging#commons-logging;1.1.1: evicting too
 	[NOT REQUIRED] org.scala-sbt#control_2.11;0.13.8-M3!control_2.11.jar
 	[NOT REQUIRED] com.typesafe.akka#akka-actor_2.11;2.3.8!akka-actor_2.11.jar
 	[NOT REQUIRED] com.typesafe.akka#akka-testkit_2.11;2.3.8!akka-testkit_2.11.jar
-:: resolution report :: resolve 3883ms :: artifacts dl 111ms
-	report for play-messenger-app#play-messenger-app_2.11;1.0-SNAPSHOT compile produced in /Users/sebastianmahlke/Playframework/my-first-app/target/resolution-cache/reports/play-messenger-app-play-messenger-app_2.11-compile.xml
-	report for play-messenger-app#play-messenger-app_2.11;1.0-SNAPSHOT runtime produced in /Users/sebastianmahlke/Playframework/my-first-app/target/resolution-cache/reports/play-messenger-app-play-messenger-app_2.11-runtime.xml
-	report for play-messenger-app#play-messenger-app_2.11;1.0-SNAPSHOT test produced in /Users/sebastianmahlke/Playframework/my-first-app/target/resolution-cache/reports/play-messenger-app-play-messenger-app_2.11-test.xml
-	report for play-messenger-app#play-messenger-app_2.11;1.0-SNAPSHOT provided produced in /Users/sebastianmahlke/Playframework/my-first-app/target/resolution-cache/reports/play-messenger-app-play-messenger-app_2.11-provided.xml
-	report for play-messenger-app#play-messenger-app_2.11;1.0-SNAPSHOT optional produced in /Users/sebastianmahlke/Playframework/my-first-app/target/resolution-cache/reports/play-messenger-app-play-messenger-app_2.11-optional.xml
-	report for play-messenger-app#play-messenger-app_2.11;1.0-SNAPSHOT compile-internal produced in /Users/sebastianmahlke/Playframework/my-first-app/target/resolution-cache/reports/play-messenger-app-play-messenger-app_2.11-compile-internal.xml
-	report for play-messenger-app#play-messenger-app_2.11;1.0-SNAPSHOT runtime-internal produced in /Users/sebastianmahlke/Playframework/my-first-app/target/resolution-cache/reports/play-messenger-app-play-messenger-app_2.11-runtime-internal.xml
-	report for play-messenger-app#play-messenger-app_2.11;1.0-SNAPSHOT test-internal produced in /Users/sebastianmahlke/Playframework/my-first-app/target/resolution-cache/reports/play-messenger-app-play-messenger-app_2.11-test-internal.xml
-	report for play-messenger-app#play-messenger-app_2.11;1.0-SNAPSHOT plugin produced in /Users/sebastianmahlke/Playframework/my-first-app/target/resolution-cache/reports/play-messenger-app-play-messenger-app_2.11-plugin.xml
-	report for play-messenger-app#play-messenger-app_2.11;1.0-SNAPSHOT sources produced in /Users/sebastianmahlke/Playframework/my-first-app/target/resolution-cache/reports/play-messenger-app-play-messenger-app_2.11-sources.xml
-	report for play-messenger-app#play-messenger-app_2.11;1.0-SNAPSHOT docs produced in /Users/sebastianmahlke/Playframework/my-first-app/target/resolution-cache/reports/play-messenger-app-play-messenger-app_2.11-docs.xml
-	report for play-messenger-app#play-messenger-app_2.11;1.0-SNAPSHOT pom produced in /Users/sebastianmahlke/Playframework/my-first-app/target/resolution-cache/reports/play-messenger-app-play-messenger-app_2.11-pom.xml
-	report for play-messenger-app#play-messenger-app_2.11;1.0-SNAPSHOT scala-tool produced in /Users/sebastianmahlke/Playframework/my-first-app/target/resolution-cache/reports/play-messenger-app-play-messenger-app_2.11-scala-tool.xml
-	report for play-messenger-app#play-messenger-app_2.11;1.0-SNAPSHOT fork-run produced in /Users/sebastianmahlke/Playframework/my-first-app/target/resolution-cache/reports/play-messenger-app-play-messenger-app_2.11-fork-run.xml
-	resolve done (3883ms resolve - 111ms download)
+:: resolution report :: resolve 5552ms :: artifacts dl 148ms
+	report for play-messenger-app#play-messenger-app_2.11;1.0-SNAPSHOT compile produced in /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/target/resolution-cache/reports/play-messenger-app-play-messenger-app_2.11-compile.xml
+	report for play-messenger-app#play-messenger-app_2.11;1.0-SNAPSHOT runtime produced in /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/target/resolution-cache/reports/play-messenger-app-play-messenger-app_2.11-runtime.xml
+	report for play-messenger-app#play-messenger-app_2.11;1.0-SNAPSHOT test produced in /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/target/resolution-cache/reports/play-messenger-app-play-messenger-app_2.11-test.xml
+	report for play-messenger-app#play-messenger-app_2.11;1.0-SNAPSHOT provided produced in /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/target/resolution-cache/reports/play-messenger-app-play-messenger-app_2.11-provided.xml
+	report for play-messenger-app#play-messenger-app_2.11;1.0-SNAPSHOT optional produced in /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/target/resolution-cache/reports/play-messenger-app-play-messenger-app_2.11-optional.xml
+	report for play-messenger-app#play-messenger-app_2.11;1.0-SNAPSHOT compile-internal produced in /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/target/resolution-cache/reports/play-messenger-app-play-messenger-app_2.11-compile-internal.xml
+	report for play-messenger-app#play-messenger-app_2.11;1.0-SNAPSHOT runtime-internal produced in /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/target/resolution-cache/reports/play-messenger-app-play-messenger-app_2.11-runtime-internal.xml
+	report for play-messenger-app#play-messenger-app_2.11;1.0-SNAPSHOT test-internal produced in /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/target/resolution-cache/reports/play-messenger-app-play-messenger-app_2.11-test-internal.xml
+	report for play-messenger-app#play-messenger-app_2.11;1.0-SNAPSHOT plugin produced in /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/target/resolution-cache/reports/play-messenger-app-play-messenger-app_2.11-plugin.xml
+	report for play-messenger-app#play-messenger-app_2.11;1.0-SNAPSHOT sources produced in /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/target/resolution-cache/reports/play-messenger-app-play-messenger-app_2.11-sources.xml
+	report for play-messenger-app#play-messenger-app_2.11;1.0-SNAPSHOT docs produced in /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/target/resolution-cache/reports/play-messenger-app-play-messenger-app_2.11-docs.xml
+	report for play-messenger-app#play-messenger-app_2.11;1.0-SNAPSHOT pom produced in /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/target/resolution-cache/reports/play-messenger-app-play-messenger-app_2.11-pom.xml
+	report for play-messenger-app#play-messenger-app_2.11;1.0-SNAPSHOT scala-tool produced in /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/target/resolution-cache/reports/play-messenger-app-play-messenger-app_2.11-scala-tool.xml
+	report for play-messenger-app#play-messenger-app_2.11;1.0-SNAPSHOT fork-run produced in /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/target/resolution-cache/reports/play-messenger-app-play-messenger-app_2.11-fork-run.xml
+	resolve done (5552ms resolve - 148ms download)
 Read from stdout: Done updating.
 Done updating.
-Total time: 5 s, completed 24.04.2015 15:31:07
+Total time: 7 s, completed 26.04.2015 11:03:07
 > server-post-command-cleanup
 > server-handle-next-server-request
 > root/playForkNotifyStart http://localhost:9000
 Evaluating tasks: *:playForkNotifyStart
-Running task... Cancel: sbt.server.ServerTaskCancellation@39eeb4fb, check cycles: false
-Total time: 0 s, completed 24.04.2015 15:31:08
+Running task... Cancel: sbt.server.ServerTaskCancellation@59c89602, check cycles: false
+Total time: 0 s, completed 26.04.2015 11:03:09
 > server-post-command-cleanup
 > server-handle-next-server-request
-> {file:/Users/sebastianmahlke/Playframework/my-first-app/}root/*:playForkReload
+> {file:/Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/}root/*:playForkReload
 Evaluating tasks: *:playForkReload
-Running task... Cancel: sbt.server.ServerTaskCancellation@3e928a75, check cycles: false
+Running task... Cancel: sbt.server.ServerTaskCancellation@1a34ecbf, check cycles: false
+
+Initial source changes: 
+	removed:Set(/Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/app/model/User.java)
+	added: Set(/Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/app/models/User.java)
+	modified: Set(/Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/app/controllers/Application.java)
+Removed products: Set()
+External API changes: API Changes: Set()
+Modified binary dependencies: Set()
+Initial directly invalidated sources: Set(/Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/app/controllers/Application.java, /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/app/model/User.java, /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/app/models/User.java)
+
+Sources indirectly invalidated by:
+	product: Set()
+	binary dep: Set()
+	external source: Set()
+All initially invalidated sources: Set(/Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/app/controllers/Application.java, /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/app/model/User.java, /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/app/models/User.java)
+
+Read from stdout: Compiling 2 Java sources to /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/target/scala-2.11/classes...
+Compiling 2 Java sources to /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/target/scala-2.11/classes...
+Attempting to call com.sun.tools.javac.api.JavacTool@1afe1852 directly...
+Java compilation took 1.378144493 s
+Java analysis took 0.21931818 s
+Java compile + analysis took 1.607690275 s
+Invalidating /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/app/model/User.java...
+Invalidating (transitively) by inheritance from /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/app/model/User.java...
+Initial set of included nodes: Set(/Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/app/model/User.java)
+Invalidated by transitive inheritance dependency: Set(/Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/app/model/User.java)
+The /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/app/model/User.java source file has the following regular definitions changed:
+	.
+All member reference dependencies will be considered within this context.
+Invalidating /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/app/models/User.java...
+Invalidating (transitively) by inheritance from /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/app/models/User.java...
+Initial set of included nodes: Set(/Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/app/models/User.java)
+Invalidated by transitive inheritance dependency: Set(/Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/app/models/User.java)
+The /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/app/models/User.java source file has the following regular definitions changed:
+	addPropertyChangeListener, notify, _ebean_setFieldIntercept, idType, find, cancel, findPagingList, refresh, name, removePropertyChangeListener, findUnique, findFutureRowCount, nextId, findFutureList, setParameter, wait, server, setName, serialVersionUID, deleteManyToManyAssociations, setListener, setId, equals, getMaxRows, _ebean_createCopy, serverName, findVisit, all, setReadOnly, Model$Finder, _ebean_setEmbeddedLoaded, query, _ebean_getIntercept, setTimeout, ref, getFirstRow, setQuery, setOrder, _ebean_getFieldNames, byId, setAutofetch, _ebean_getField, notifyAll, getName, _ebean_isEmbeddedNewOrDirty, setUseQueryCache, filter, setRawSql, select, getExpressionFactory, filterMany, _ebean_getMarker, setUseCache, <init>, id, on, isForUpdate, findSet, saveManyToManyAssociations, getRawSql, order, _ebean_newInstance, findRowCount, orderBy, setMaxRows, findFutureIds, delete, findIds, User, fetch, copy, setLoadBeanCache, toString, getGeneratedSql, isAutofetchTuned, setMapKey, setBufferFetchSizeHint, where, setFirstRow, setOrderBy, findIterate, getClass, update, type, save, getId, having, setDistinct, findList, _ebean_setField, setBackgroundFetchAfter, setForUpdate, _ebean_intercept, hashCode, findMap, _ebean_getFieldIntercept.
+All member reference dependencies will be considered within this context.
+Name hashing optimization doesn't apply to non-Scala dependency: /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/app/models/User.java
+New invalidations:
+	Set()
+Initial set of included nodes: Set()
+Previously invalidated, but (transitively) depend on new invalidations:
+	Set()
+All newly invalidated sources after taking into account (previously) recompiled sources:Set()
+Copy resource mappings: 
+	(/Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/conf/application.conf,/Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/target/scala-2.11/classes/application.conf)
+	(/Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/conf/routes,/Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/target/scala-2.11/classes/routes)
+Total time: 3 s, completed 26.04.2015 11:03:14
+> server-post-command-cleanup
+> server-handle-next-server-request
+> {file:/Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/}root/*:playForkReload
+Evaluating tasks: *:playForkReload
+Running task... Cancel: sbt.server.ServerTaskCancellation@29b418b9, check cycles: false
 
 Initial source changes: 
 	removed:Set()
@@ -23983,9 +24035,12 @@ Sources indirectly invalidated by:
 All initially invalidated sources: Set()
 
 Copy resource mappings: 
-	(/Users/sebastianmahlke/Playframework/my-first-app/conf/application.conf,/Users/sebastianmahlke/Playframework/my-first-app/target/scala-2.11/classes/application.conf)
-	(/Users/sebastianmahlke/Playframework/my-first-app/conf/routes,/Users/sebastianmahlke/Playframework/my-first-app/target/scala-2.11/classes/routes)
-Total time: 1 s, completed 24.04.2015 15:31:23
+	(/Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/conf/application.conf,/Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/target/scala-2.11/classes/application.conf)
+	(/Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/conf/evolutions,/Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/target/scala-2.11/classes/evolutions)
+	(/Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/conf/routes,/Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/target/scala-2.11/classes/routes)
+	(/Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/conf/evolutions/default,/Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/target/scala-2.11/classes/evolutions/default)
+	(/Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/conf/evolutions/default/1.sql,/Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/target/scala-2.11/classes/evolutions/default/1.sql)
+Total time: 1 s, completed 26.04.2015 11:04:10
 > server-post-command-cleanup
 > server-handle-next-server-request
 Done executing sbt server engine, result Right(Exit(0))
@@ -23994,4 +24049,4 @@ Waiting for socket thread
 Waiting for request processor thread
 Waiting for command engine result
 Returning control to sbt launcher with result Exit(0)
-Closing the 1526@Sebastians-MacBook-Pro-2.local logs at Fri Apr 24 15:33:39 CEST 2015, goodbye.
+Closing the 12628@SebastiansMBP2.fritz.box logs at Sun Apr 26 11:05:37 CEST 2015, goodbye.

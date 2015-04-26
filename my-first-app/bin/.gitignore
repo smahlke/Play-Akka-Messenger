@@ -1,7 +1,5 @@
-/ApplicationTest.class
-/IntegrationTest$1.class
-/IntegrationTest.class
-/application.conf
+/model/
 /controllers/
-/routes
-/views/
+/models/
+/assets/
+/evolutions/
