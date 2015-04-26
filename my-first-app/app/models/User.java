@@ -3,16 +3,17 @@ package models;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import play.db.ebean.Model;
+import play.db.jpa.*;
 
 @Entity
-public class User extends Model {
+public class User {
 
 	/**
 	 * 
 	 */
+	@SuppressWarnings("unused")
 	private static final long serialVersionUID = -7922784625447104187L;
-	
+
 	@Id
 	private Long id;
 	private String name;
@@ -20,13 +21,15 @@ public class User extends Model {
 	public User(String name) {
 		this.name = name;
 	}
-	
+
 	public User() {
-		
+
 	}
-	
-	public static Finder<Long, User> find = new Model.Finder<Long, User>(Long.class, User.class);
-	
+
+	public static User findById(Long id) {
+		return JPA.em().find(User.class, id);
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -34,7 +37,7 @@ public class User extends Model {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -42,7 +45,5 @@ public class User extends Model {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
-	
-	
+
 }

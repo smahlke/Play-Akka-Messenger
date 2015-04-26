@@ -1,10 +1,7 @@
-New log file opened at Sun Apr 26 11:05:43 CEST 2015 by 12644@SebastiansMBP2.fritz.box
-Taking next connection to: 59186
-New client attempting to connect on port: 59187-59186
-  Address = /192.168.178.20:59186
-This client on port 59187 has uuid 9bf8f0f9-fabc-4db2-802c-63d7a922f62f configName play-fork-run humanReadableName Play Fork Run protocolVersion 1 featureTags Vector()
-Connected Clients: play-fork-run-9bf8f0f9-fabc-4db2-802c-63d7a922f62f
-Taking next connection to: 59186
-Checking to see if clients are empty...
-We have 1 non-daemon clients, continuing serving connections.
-Taking next connection to: 59186
+New log file opened at Sun Apr 26 11:59:41 CEST 2015 by 13363@SebastiansMBP2.fritz.box
+Taking next connection to: 59620
+New client attempting to connect on port: 59621-59620
+  Address = /192.168.178.20:59620
+This client on port 59621 has uuid 42c693aa-209e-42bb-b52b-9edb4b592bc9 configName play-fork-run humanReadableName Play Fork Run protocolVersion 1 featureTags Vector()
+Connected Clients: play-fork-run-42c693aa-209e-42bb-b52b-9edb4b592bc9
+Taking next connection to: 59620

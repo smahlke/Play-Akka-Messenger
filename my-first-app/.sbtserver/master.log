@@ -1,5 +1,5 @@
-New log file opened at Sun Apr 26 11:05:43 CEST 2015 by 12644@SebastiansMBP2.fritz.box
-jvm 12644@SebastiansMBP2.fritz.box
+New log file opened at Sun Apr 26 11:59:41 CEST 2015 by 13363@SebastiansMBP2.fritz.box
+jvm 13363@SebastiansMBP2.fritz.box
 jvm vmName=Java HotSpot(TM) 64-Bit Server VM vmVendor=Oracle Corporation vmVersion=25.31-b07
 jvm specName=Java Virtual Machine Specification specVendor=Oracle Corporation specVersion=1.8
 jvm arguments: [-Xms256m, -Xmx1024m, -XX:MetaspaceSize=64m, -XX:MaxMetaspaceSize=256m]
@@ -27,7 +27,7 @@ sorting: ns: List(sbt.plugins.CorePlugin, sbt.plugins.IvyPlugin, sbt.plugins.Jvm
   :: sorted deduced result: List(sbt.plugins.CorePlugin, sbt.plugins.IvyPlugin, sbt.plugins.JvmPlugin, sbt.plugins.JUnitXmlReportPlugin)
 [Loading] Done in /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/project, returning: (my-first-app-build)
 Loading project definition from /Users/sebastianmahlke/Play-Akka-Messenger/my-first-app/project
-Running task... Cancel: sbt.TaskCancellationStrategy$Null$@1d5ecd54, check cycles: false
+Running task... Cancel: sbt.TaskCancellationStrategy$Null$@160cd827, check cycles: false
 
 Initial source changes: 
 	removed:Set()
