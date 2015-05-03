@@ -1,6 +1,8 @@
 package models;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import play.db.jpa.*;
@@ -8,12 +10,10 @@ import play.db.jpa.*;
 @Entity
 public class User {
 
-	/**
-	 * 
-	 */
 	@SuppressWarnings("unused")
 	private static final long serialVersionUID = -7922784625447104187L;
 
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	private Long id;
 	private String name;
