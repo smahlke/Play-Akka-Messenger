@@ -2,6 +2,8 @@ package controllers;
 
 import models.Message;
 import models.User;
+import models.repository.MessageRepository;
+import models.repository.UserRepository;
 import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
 import play.libs.F.Function;
@@ -25,6 +27,11 @@ public class Application extends Controller {
          // Create our local actors
     	User anton = new User("Anton");
     	User sebastian = new User("Sebastian");
+    	anton.addUserToContactList(sebastian);
+    	sebastian.addUserToContactList(anton);
+    	UserRepository.getInstance().persist(sebastian);
+    	UserRepository.getInstance().persist(anton);
+    	
          actorSystem.actorOf( ChatRoomActor.props(anton, sebastian),  anton.getName()+sebastian.getName()+"ChatRoomActor" );
     }
    
@@ -39,11 +46,14 @@ public class Application extends Controller {
     * @param name          The name of the person to greet
     * @return               The promise of a Result
     */
+   @Transactional
    public static Promise<Result> localHello( String messageString)
    {
+	   
 	   Message message = new Message(messageString);
 	   message.setSource(new User("Anton"));
 	   message.setDestination(new User("Sebastian"));
+//	   MessageRepository.getInstance().persist(message);
         // Look up the actor
         ActorSelection myActor =
                   actorSystem.actorSelection( "user/" + message.getSource().getName() + message.getDestination().getName() + "ChatRoomActor" );
@@ -83,7 +93,7 @@ public class Application extends Controller {
     
     @Transactional
     public static Result trivial(String name) {
-        return ok(main.render("Title", Html.apply(""+Message.findAllMessages() +"")));
+        return ok(main.render("Title", Html.apply(""+MessageRepository.getInstance().findAll() +"")));
     }
     
     public static Result test(String name) {

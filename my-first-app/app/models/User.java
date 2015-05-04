@@ -1,33 +1,36 @@
 package models;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
-import play.db.jpa.*;
+import javax.persistence.OneToMany;
 
 @Entity
-public class User {
+public class User implements Serializable {
 
-	@SuppressWarnings("unused")
 	private static final long serialVersionUID = -7922784625447104187L;
 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	private Long id;
 	private String name;
+	
+	@OneToMany
+	//@JoinColumn
+	private List<User> contactList;
 
 	public User(String name) {
 		this.name = name;
+		this.contactList = new ArrayList<User>();
 	}
 
 	public User() {
-
-	}
-
-	public static User findById(Long id) {
-		return JPA.em().find(User.class, id);
+		this.contactList = new ArrayList<User>();
 	}
 
 	public String getName() {
@@ -44,6 +47,16 @@ public class User {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	public List<User> getContactList() {
+		return contactList;
+	}
+
+	public void addUserToContactList(User ...users) {
+		for (User a : users) {
+			this.contactList.add(a);
+		}
 	}
 
 }

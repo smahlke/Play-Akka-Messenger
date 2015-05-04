@@ -59,15 +59,6 @@ public class Message implements Serializable {
 		this.receivedOnServer = false;
 	}
 
-	public static Message findById(Long id) {
-		return JPA.em().find(Message.class, id);
-	}
-
-	public static List<Message> findAllMessages() {
-		Query query = JPA.em().createQuery("SELECT m FROM Message m");
-		return query.getResultList();
-	}
-
 	public Long getId() {
 		return id;
 	}
