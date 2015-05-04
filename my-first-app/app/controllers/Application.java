@@ -4,17 +4,66 @@ import models.Message;
 import models.User;
 import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
+import play.libs.F.Function;
+import play.libs.F.Promise;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.twirl.api.Html;
 import views.html.index;
 import views.html.main;
+import actors.ChatRoomActor;
+import akka.actor.ActorSelection;
+import akka.actor.ActorSystem;
+import akka.actor.Props;
+import static akka.pattern.Patterns.ask;
 
 public class Application extends Controller {
 
-    public static Result index() {
-        return ok(index.render("Your new application is reayd."));
+	static ActorSystem actorSystem = ActorSystem.create( "play" );
+    
+    static {
+         // Create our local actors
+    	User anton = new User("Anton");
+    	User sebastian = new User("Sebastian");
+         actorSystem.actorOf( ChatRoomActor.props(anton, sebastian),  anton.getName()+sebastian.getName()+"ChatRoomActor" );
     }
+   
+   public static Result index() {
+       return ok(index.render("Your new application is ready."));
+   }
+  
+   /**
+    * Controller action that constructs a MyMessage and sends it to our local
+    * Hello, World actor
+    *
+    * @param name          The name of the person to greet
+    * @return               The promise of a Result
+    */
+   public static Promise<Result> localHello( String messageString)
+   {
+	   Message message = new Message(messageString);
+	   message.setSource(new User("Anton"));
+	   message.setDestination(new User("Sebastian"));
+        // Look up the actor
+        ActorSelection myActor =
+                  actorSystem.actorSelection( "user/" + message.getSource().getName() + message.getDestination().getName() + "ChatRoomActor" );
+       
+       
+        // As the actor for a response to the message (and a 30 second timeout);
+        // ask returns an Akka Future, so we wrap it with a Play Promise
+        return Promise.wrap(ask(myActor, message, 30000)).map(
+                    new Function<Object, Result>() {
+                        public Result apply(Object response) {
+                             if( response instanceof Message ) {
+                            	 Message message = ( Message )response;
+                                  return ok( message.getMessage() );
+                             }
+                            return notFound( "Message is not of type MyMessage" );
+                        }
+                    }
+                );
+   }
+	
     
     @Transactional
     public static Result main() {

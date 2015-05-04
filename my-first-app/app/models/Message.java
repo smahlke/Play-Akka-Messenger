@@ -1,9 +1,8 @@
 package models;
 
+import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,7 +15,12 @@ import play.db.jpa.JPA;
 
 
 @Entity
-public class Message {
+public class Message implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2259536076218383079L;
 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
@@ -36,6 +40,12 @@ public class Message {
 	private boolean receivedOnServer; // empfangen
 	private boolean receivedOnClient; // gelesen
 
+	public Message(String message) {
+		this.message = message;
+		this.receivedOnClient = false;
+		this.receivedOnServer = false;
+	}
+	
 	public Message() {
 		this.receivedOnClient = false;
 		this.receivedOnServer = false;
