@@ -1,23 +1,18 @@
 package controllers;
 
+import static akka.pattern.Patterns.ask;
 import models.Message;
 import models.User;
 import models.repository.MessageRepository;
-import models.repository.UserRepository;
-import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
 import play.libs.F.Function;
 import play.libs.F.Promise;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.twirl.api.Html;
-import views.html.index;
-import views.html.main;
-import actors.ChatRoomActor;
+import views.html.*;
 import akka.actor.ActorSelection;
 import akka.actor.ActorSystem;
-import akka.actor.Props;
-import static akka.pattern.Patterns.ask;
 
 public class Application extends Controller {
 
@@ -25,18 +20,37 @@ public class Application extends Controller {
     
     static {
          // Create our local actors
-    	User anton = new User("Anton");
-    	User sebastian = new User("Sebastian");
-    	anton.addUserToContactList(sebastian);
-    	sebastian.addUserToContactList(anton);
-    	UserRepository.getInstance().persist(sebastian);
-    	UserRepository.getInstance().persist(anton);
-    	
-         actorSystem.actorOf( ChatRoomActor.props(anton, sebastian),  anton.getName()+sebastian.getName()+"ChatRoomActor" );
+//    	User anton = new User("Anton");
+//    	User sebastian = new User("Sebastian");
+//    	anton.addUserToContactList(sebastian);
+//    	sebastian.addUserToContactList(anton);
+//    	UserRepository.getInstance().persist(sebastian);
+//    	UserRepository.getInstance().persist(anton);
+//    	
+//         actorSystem.actorOf(ChatRoomActor.props(anton, sebastian),  anton.getName()+sebastian.getName()+"ChatRoomActor" );
     }
    
+   @Transactional
    public static Result index() {
        return ok(index.render("Your new application is ready."));
+   }
+   
+   public static Result registForm() {
+       return ok(views.html.registForm.render());
+   }
+   
+   /**
+    * Wird vom Registrierungsformular aufgerufen.
+    * @return
+    */
+   public static Result regist(String username) {
+	   //User anlegen
+	   
+	   return ok(views.html.registSuccess.render(username));
+   }
+   
+   public static Result login() {
+	   return TODO;
    }
   
    /**
@@ -68,7 +82,7 @@ public class Application extends Controller {
                             	 Message message = ( Message )response;
                                   return ok( message.getMessage() );
                              }
-                            return notFound( "Message is not of type MyMessage" );
+                            return notFound( "Message is not of type Message" );
                         }
                     }
                 );
@@ -78,15 +92,15 @@ public class Application extends Controller {
     @Transactional
     public static Result main() {
     	
-    	User u = new User();
-    	u.setName("jiiiiipiii");
-    	JPA.em().persist(u);
-    	
-    	Message m = new Message();
-    	m.setMessage("some message");
-    	m.setSource(u);
-    	m.setDestination(u);
-    	JPA.em().persist(m);
+//    	User u = new User();
+//    	u.setName("jiiiiipiii");
+//    	JPA.em().persist(u);
+//    	
+//    	Message m = new Message();
+//    	m.setMessage("some message");
+//    	m.setSource(u);
+//    	m.setDestination(u);
+//    	JPA.em().persist(m);
     	
         return ok(main.render("Some Title", Html.apply("<span> bla </span>")));
     }
