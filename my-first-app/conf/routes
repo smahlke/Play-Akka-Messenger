@@ -4,8 +4,8 @@
 
 # Home page
 GET     /                           controllers.Application.index()
-POST    /regist                     controllers.Application.regist(username: String)
-GET     /registForm                 controllers.Application.registForm()
+GET		/registForm					controllers.Application.registForm()
+POST    /signup                 	controllers.Application.submit()
 GET     /login						controllers.Application.login()
 GET     /main                       controllers.Application.main()
 GET     /trivial/:name       	    controllers.Application.trivial(name: String)

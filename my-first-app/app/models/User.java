@@ -18,29 +18,59 @@ public class User implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	private Long id;
-	private String name;
+	private String username;
+	private String firstname;
+	private String lastname;
+	private String password;
 	
 	@OneToMany
 	//@JoinColumn
 	private List<User> contactList;
 
 	public User(String name) {
-		this.name = name;
+		this.username = name;
 		this.contactList = new ArrayList<User>();
+	}
+	
+	public String getUsername() {
+		return username;
+	}
+
+	
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public User() {
 		this.contactList = new ArrayList<User>();
 	}
 
-	public String getName() {
-		return name;
+	public String getFirstname() {
+		return firstname;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
 	}
 
+	public String getLastname() {
+		return lastname;
+	}
+
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
+
+	
 	public Long getId() {
 		return id;
 	}
