@@ -1,0 +1,14 @@
+@main("Chat") {
+
+<div class="row">
+
+	<div class="col-sm-3">
+	@for(user <- Users.current()) {
+        <a href="#">@user.getUsername()</a>
+      }
+	</div>
+	<div class="col-sm-9">rechts</div>
+</div>
+
+
+}

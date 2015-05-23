@@ -5,12 +5,11 @@
 # Home page
 GET     /                           controllers.Application.index()
 GET		/registForm					controllers.Application.registForm()
+GET		/loginForm					controllers.Application.loginForm()
 POST    /signup                 	controllers.Application.submit()
-GET     /login						controllers.Application.login()
+POST    /login						controllers.Application.login()
 GET     /main                       controllers.Application.main()
-GET     /trivial/:name       	    controllers.Application.trivial(name: String)
-GET     /local-hello/:messageString controllers.Application.localHello(messageString: String )
-
+GET		/chat						controllers.Application.chat()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

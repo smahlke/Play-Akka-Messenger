@@ -12,12 +12,15 @@ import play.libs.F.Function;
 import play.libs.F.Promise;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.Security;
+import play.mvc.With;
 import play.twirl.api.Html;
 import views.html.index;
 import views.html.main;
 import akka.actor.ActorSelection;
 import akka.actor.ActorSystem;
 
+@With(Users.class)
 public class Application extends Controller {
 	
 	final static Form<User> userForm = Form.form(User.class);
@@ -41,9 +44,18 @@ public class Application extends Controller {
 	public static Result index() {
 		return ok(index.render("Your new application is ready."));
 	}
+	
+	@Security.Authenticated(Secured.class)
+	public static Result chat() {
+		return ok(views.html.chat.render());
+	}
 
 	public static Result registForm() {
 		return ok(views.html.registForm.render(userForm));
+	}
+	
+	public static Result loginForm() {
+		return ok(views.html.login.render(userForm));
 	}
 
 	@Transactional
@@ -70,8 +82,25 @@ public class Application extends Controller {
 		return ok(views.html.registSuccess.render(username));
 	}
 
+	@Transactional
 	public static Result login() {
-		return TODO;
+
+		Form<User> filledForm = userForm.bindFromRequest();
+		DynamicForm requestData = Form.form().bindFromRequest();
+		try {
+			User user = UserRepository.getInstance().findByUsername(requestData.get("username"));
+			if (user.getPassword().equals(requestData.get("password"))) {
+				return ok(views.html.chat.render());
+			} else {
+				return ok(views.html.registForm.render(userForm));
+			}
+			
+			
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+			return ok(views.html.errorPage.render(e.getMessage()));
+		}
 	}
 
 	/**

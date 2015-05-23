@@ -32,7 +32,7 @@ public class ChatRoomActor extends UntypedActor {
 		if( message instanceof Message )
         {
 			Message myMessage = ( Message )message;
-             myMessage.setMessage(myMessage.getSource().getName() + " says: " + myMessage.getMessage() + " to " + myMessage.getDestination().getName());
+             myMessage.setMessage(myMessage.getSource().getUsername() + " says: " + myMessage.getMessage() + " to " + myMessage.getDestination().getUsername());
              getSender().tell( myMessage, getSelf() );
         }
         else
