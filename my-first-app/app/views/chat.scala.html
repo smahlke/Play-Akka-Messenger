@@ -1,8 +1,16 @@
+@(currentUser: User)
+
 @main("Chat") {
 
 <div class="row">
 
 	<div class="col-sm-3">
+	Meine Kontakte:
+	@for(contact <- Users.contactList()) {
+        <a href="#">@contact.getUsername()</a>
+      }
+      
+    Alle Nutzer:  
 	@for(user <- Users.current()) {
         <a href="#">@user.getUsername()</a>
       }

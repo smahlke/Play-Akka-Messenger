@@ -9,6 +9,7 @@ import javax.persistence.TypedQuery;
 import models.User;
 import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
+import play.libs.F;
 
 public class UserRepository implements CrudRepository<User> {
 	
@@ -25,6 +26,26 @@ public class UserRepository implements CrudRepository<User> {
 		return instance;
 	}
 	
+	@Transactional
+	public User findByUsername(final String name) {
+	    try {
+	        return JPA.withTransaction(new play.libs.F.Function0<User>() {
+	            public User apply() throws Exception {       
+	    			TypedQuery<User> query = null;
+	    			query = JPA.em().createQuery("SELECT u FROM User u WHERE u.username=:name", User.class)
+			                .setParameter("name", name);
+	    			List<User> users = query.getResultList();
+	    			if (users.size() == 0) {
+	    				throw new Exception("Es existiert kein Benutzer mit dem Nutzernamen " + name + ".");
+	    			}
+	    			
+					return users.get(0);
+	            }
+	        });
+	    } catch (Throwable t) {
+	        throw new RuntimeException(t);
+	    }       
+	}
 	
 	/**
 	 * Suche einen Benutzer mithilfe seiner ID.
@@ -35,18 +56,6 @@ public class UserRepository implements CrudRepository<User> {
 	public User findById(Long id) {
 		return JPA.em().find(User.class, id);
 	}
-	
-	@Transactional
-	public User findByUsername(String name) throws Exception {
-		Query query = JPA.em().createQuery("SELECT u FROM User u WHERE u.username=:name")
-                .setParameter("name", name);
-		List<User> user = query.getResultList();
-		if (user.size() == 0) {
-			throw new Exception("Es existiert kein Benutzer mit dem Nutzernamen " + name + ".");
-		}
-		return user.get(0);
-
-	}
 
 	@Transactional
 	@Override
@@ -55,31 +64,25 @@ public class UserRepository implements CrudRepository<User> {
 	}
 
 	@Transactional
-	public static List<User> findAllUsers() {
-		List<User> l = new ArrayList<User>();
-		User user = new User();
-		user.setUsername("testname");
-		l.add(user );
-		TypedQuery<User> query = (TypedQuery<User>) JPA.em().createQuery("SELECT u FROM User u", User.class);
-		return query.getResultList();
-		
+	public List<User> findAllUsers() {
+		try {
+	        return JPA.withTransaction(new play.libs.F.Function0<List<User>>() {
+	            public List<User> apply() throws Exception {       
+	    			TypedQuery<User> query = null;
+	    			query = (TypedQuery<User>) JPA.em().createQuery("SELECT u FROM User u", User.class);
+	    			List<User> users = query.getResultList();
+	    			
+					return users;
+	            }
+	        });
+	    } catch (Throwable t) {
+	        throw new RuntimeException(t);
+	    }       
 	}
-	
-	public List<User> getUsersFromContactList(User user) {
-		return null;
-	}
-	
-	public void addUserToContactList(User user, User ...toAdd) {
-		user.addUserToContactList(toAdd);
-	}
-
 
 	@Override
 	public List<User> findAll() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	
-	
 }

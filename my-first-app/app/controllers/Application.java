@@ -47,7 +47,7 @@ public class Application extends Controller {
 	
 	@Security.Authenticated(Secured.class)
 	public static Result chat() {
-		return ok(views.html.chat.render());
+		return ok(views.html.chat.render(UserRepository.getInstance().findByUsername(session().get("username"))));
 	}
 
 	public static Result registForm() {
@@ -90,7 +90,10 @@ public class Application extends Controller {
 		try {
 			User user = UserRepository.getInstance().findByUsername(requestData.get("username"));
 			if (user.getPassword().equals(requestData.get("password"))) {
-				return ok(views.html.chat.render());
+				session("username", user.getUsername());
+				User contact = UserRepository.getInstance().findByUsername("lalu");
+				user.addUserToContactList(contact);
+				return ok(views.html.chat.render(user));
 			} else {
 				return ok(views.html.registForm.render(userForm));
 			}

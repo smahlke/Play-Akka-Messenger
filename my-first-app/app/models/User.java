@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -23,20 +25,20 @@ public class User implements Serializable {
 	private String lastname;
 	private String password;
 	
-	@OneToMany
-	//@JoinColumn
-	private List<User> contactList;
+	@OneToMany(fetch = FetchType.EAGER)
+	@JoinColumn
+	private List<User> contactList = new ArrayList<User>();
 
+	public User() {
+	}
+	
 	public User(String name) {
 		this.username = name;
-		this.contactList = new ArrayList<User>();
 	}
 	
 	public String getUsername() {
 		return username;
 	}
-
-	
 
 	public String getPassword() {
 		return password;
@@ -48,10 +50,6 @@ public class User implements Serializable {
 
 	public void setUsername(String username) {
 		this.username = username;
-	}
-
-	public User() {
-		this.contactList = new ArrayList<User>();
 	}
 
 	public String getFirstname() {
@@ -70,7 +68,6 @@ public class User implements Serializable {
 		this.lastname = lastname;
 	}
 
-	
 	public Long getId() {
 		return id;
 	}
