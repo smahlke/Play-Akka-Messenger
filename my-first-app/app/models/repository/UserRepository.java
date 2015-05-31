@@ -60,7 +60,18 @@ public class UserRepository implements CrudRepository<User> {
 	@Transactional
 	@Override
 	public void persist(User entity) {
-		JPA.em().persist(entity);
+		try {
+	        JPA.withTransaction(new play.libs.F.Callback0() {
+				
+				@Override
+				public void invoke() throws Throwable {
+	        		JPA.em().persist(entity);
+					
+				}
+			});
+	    } catch (Throwable t) {
+	        throw new RuntimeException(t);
+	    }      
 	}
 
 	@Transactional
