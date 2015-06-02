@@ -30,7 +30,7 @@ public class Users extends Action.Simple {
 	
 	@Transactional
     public static List<User> contactList() {
-		String username = Http.Context.current().session().get("username");
+		String username = "a";// Http.Context.current().session().get("username");
 		User user = UserRepository.getInstance().findByUsername(username);
 		return user.getContactList();
     }

@@ -7,7 +7,6 @@ import models.repository.MessageRepository;
 import models.repository.UserRepository;
 import play.data.DynamicForm;
 import play.data.Form;
-import play.db.jpa.Transactional;
 import play.libs.F.Function;
 import play.libs.F.Promise;
 import play.mvc.Controller;
@@ -15,10 +14,9 @@ import play.mvc.Result;
 import play.mvc.Security;
 import play.mvc.With;
 import play.twirl.api.Html;
-import views.html.index;
-import views.html.main;
 import akka.actor.ActorSelection;
 import akka.actor.ActorSystem;
+import be.objectify.as.AsyncTransactional;
 
 @With(Users.class)
 public class Application extends Controller {
@@ -40,9 +38,9 @@ public class Application extends Controller {
 		// anton.getName()+sebastian.getName()+"ChatRoomActor" );
 	}
 
-	@Transactional
+	@AsyncTransactional
 	public static Result index() {
-		return ok(index.render("Your new application is ready."));
+		return ok(views.html.index.render("Your new application is ready."));
 	}
 	
 	@Security.Authenticated(Secured.class)
@@ -58,7 +56,7 @@ public class Application extends Controller {
 		return ok(views.html.login.render(userForm));
 	}
 
-	@Transactional
+	@AsyncTransactional
 	public static Result submit() {
 	   Form<User> filledForm = userForm.bindFromRequest();
 	   User created = new User();
@@ -82,7 +80,7 @@ public class Application extends Controller {
 		return ok(views.html.registSuccess.render(username));
 	}
 
-	@Transactional
+	@AsyncTransactional
 	public static Result login() {
 
 		Form<User> filledForm = userForm.bindFromRequest();
@@ -114,7 +112,7 @@ public class Application extends Controller {
 	 *            The name of the person to greet
 	 * @return The promise of a Result
 	 */
-	@Transactional
+	@AsyncTransactional
 	public static Promise<Result> localHello(String messageString) {
 
 		Message message = new Message(messageString);
@@ -140,7 +138,7 @@ public class Application extends Controller {
 				});
 	}
 
-	@Transactional
+	@AsyncTransactional
 	public static Result main() {
 
 		// User u = new User();
@@ -153,12 +151,12 @@ public class Application extends Controller {
 		// m.setDestination(u);
 		// JPA.em().persist(m);
 
-		return ok(main.render("Some Title", Html.apply("<span> bla </span>")));
+		return ok(views.html.main.render("Some Title", Html.apply("<span> bla </span>")));
 	}
 
-	@Transactional
+	@AsyncTransactional
 	public static Result trivial(String name) {
-		return ok(main
+		return ok(views.html.main
 				.render("Title",
 						Html.apply(""
 								+ MessageRepository.getInstance().findAll()
