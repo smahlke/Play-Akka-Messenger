@@ -6,6 +6,7 @@
 GET     /                           controllers.Application.index()
 GET		/registForm					controllers.Application.registForm()
 GET		/loginForm					controllers.Application.loginForm()
+GET		/addUser/:userid			controllers.Application.addUser(userid: Long)
 POST    /signup                 	controllers.Application.submit()
 POST    /login						controllers.Application.login()
 GET     /main                       controllers.Application.main()

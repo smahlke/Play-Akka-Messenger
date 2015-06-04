@@ -1,20 +1,35 @@
-@(currentUser: User)
-
-@main("Chat") {
+@(currentUser: User) @main("Chat") {
 
 <div class="row">
+	<br />
+	<div class="col-sm-3" >
 
-	<div class="col-sm-3">
-	Meine Kontakte:
-     @for(user <- Users.contactList()) {
-        <a href="#">@user.getUsername()</a>
-      } 
-    Alle Nutzer:  
-	@for(user <- Users.current()) {
-        <a href="#">@user.getUsername()</a>
-      }
+		<div class="panel panel-default">
+			<!-- Default panel contents -->
+			<div class="panel-heading">Kontakte</div>
+
+			<!-- List group -->
+			<ul class="list-group">
+				@for(user <- Users.contactList()) {
+				<li class="list-group-item"><a href="#">@user.getUsername()</a></li>
+				}
+			</ul>
+		</div>
+		<div class="panel panel-default">
+			<!-- Default panel contents -->
+			<div class="panel-heading">Kontakte suchen</div>			
+		</div>
+		<select id="contacts" class="js-example-basic-single"
+			style="width: 200px"> @for(user <- Users.current()) {
+			<option value="@user.getId()">@user.getUsername()</option> }
+		</select>
+		<button type="button" class="btn btn-default btn-sm" >
+			<span class="glyphicon glyphicon-plus" />
+		</button>
+
+
 	</div>
-	<div class="col-sm-9">rechts</div>
+	<div class="col-sm-9">Chat-Fenter</div>
 </div>
 
 

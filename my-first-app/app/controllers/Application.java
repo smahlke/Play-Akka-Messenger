@@ -81,6 +81,11 @@ public class Application extends Controller {
 
 		return ok(views.html.registSuccess.render(username));
 	}
+	
+	public static Result addUser(long userid) {
+		System.out.println("test" + userid);
+		return noContent();
+	}
 
 	@Transactional
 	public static Result login() {
@@ -97,8 +102,8 @@ public class Application extends Controller {
 			String enteredPassword = requestData.get("password");
 			if (user.getPassword().equals(enteredPassword)) {
 				session("username", user.getUsername());
-				User contact = UserRepository.getInstance().findByUsername("lalu");
-				UserRepository.getInstance().addUserToContactList(user, contact);
+//				User contact = UserRepository.getInstance().findByUsername("lalu");
+//				UserRepository.getInstance().addUserToContactList(user, contact);
 				//user.addUserToContactList(contact);
 //				JPA.withTransaction(new Callback0() {
 //					@Override
