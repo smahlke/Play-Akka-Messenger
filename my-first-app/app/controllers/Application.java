@@ -7,6 +7,9 @@ import models.repository.MessageRepository;
 import models.repository.UserRepository;
 import play.data.DynamicForm;
 import play.data.Form;
+import play.db.jpa.JPA;
+import play.db.jpa.Transactional;
+import play.libs.F.Callback0;
 import play.libs.F.Function;
 import play.libs.F.Promise;
 import play.mvc.Controller;
@@ -16,7 +19,6 @@ import play.mvc.With;
 import play.twirl.api.Html;
 import akka.actor.ActorSelection;
 import akka.actor.ActorSystem;
-import be.objectify.as.AsyncTransactional;
 
 @With(Users.class)
 public class Application extends Controller {
@@ -38,7 +40,7 @@ public class Application extends Controller {
 		// anton.getName()+sebastian.getName()+"ChatRoomActor" );
 	}
 
-	@AsyncTransactional
+	@Transactional
 	public static Result index() {
 		return ok(views.html.index.render("Your new application is ready."));
 	}
@@ -56,7 +58,7 @@ public class Application extends Controller {
 		return ok(views.html.login.render(userForm));
 	}
 
-	@AsyncTransactional
+	@Transactional
 	public static Result submit() {
 	   Form<User> filledForm = userForm.bindFromRequest();
 	   User created = new User();
@@ -80,17 +82,30 @@ public class Application extends Controller {
 		return ok(views.html.registSuccess.render(username));
 	}
 
-	@AsyncTransactional
+	@Transactional
 	public static Result login() {
 
 		Form<User> filledForm = userForm.bindFromRequest();
 		DynamicForm requestData = Form.form().bindFromRequest();
 		try {
+			System.out.println("Nutzername " + requestData.get("username"));
+			
+			
 			User user = UserRepository.getInstance().findByUsername(requestData.get("username"));
-			if (user.getPassword().equals(requestData.get("password"))) {
+			//JPA.em().find(User.class, primaryKey)
+			System.out.println("User Daten: " + user);
+			String enteredPassword = requestData.get("password");
+			if (user.getPassword().equals(enteredPassword)) {
 				session("username", user.getUsername());
 				User contact = UserRepository.getInstance().findByUsername("lalu");
-				user.addUserToContactList(contact);
+				UserRepository.getInstance().addUserToContactList(user, contact);
+				//user.addUserToContactList(contact);
+//				JPA.withTransaction(new Callback0() {
+//					@Override
+//					public void invoke() throws Throwable {
+//						JPA.em().merge(user);
+//					}
+//				});
 				return ok(views.html.chat.render(user));
 			} else {
 				return ok(views.html.registForm.render(userForm));
@@ -112,7 +127,7 @@ public class Application extends Controller {
 	 *            The name of the person to greet
 	 * @return The promise of a Result
 	 */
-	@AsyncTransactional
+	@Transactional
 	public static Promise<Result> localHello(String messageString) {
 
 		Message message = new Message(messageString);
@@ -138,7 +153,7 @@ public class Application extends Controller {
 				});
 	}
 
-	@AsyncTransactional
+	@Transactional
 	public static Result main() {
 
 		// User u = new User();
@@ -154,7 +169,7 @@ public class Application extends Controller {
 		return ok(views.html.main.render("Some Title", Html.apply("<span> bla </span>")));
 	}
 
-	@AsyncTransactional
+	@Transactional
 	public static Result trivial(String name) {
 		return ok(views.html.main
 				.render("Title",

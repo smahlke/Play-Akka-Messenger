@@ -5,8 +5,10 @@ import java.util.List;
 import javax.persistence.TypedQuery;
 
 import models.User;
-import be.objectify.as.AsyncJPA;
-import be.objectify.as.AsyncTransactional;
+import play.db.jpa.JPA;
+import play.db.jpa.Transactional;
+import play.libs.F.Callback0;
+import play.libs.F.Function0;
 
 public class UserRepository implements CrudRepository<User> {
 
@@ -15,33 +17,54 @@ public class UserRepository implements CrudRepository<User> {
 	 */
 	static private UserRepository instance;
 
-	@AsyncTransactional
+	@Transactional
 	public static UserRepository getInstance() {
 		if (instance == null) {
 			instance = new UserRepository();
 		}
 		return instance;
 	}
-	
-	@AsyncTransactional
+
+	@Transactional
 	public User findByUsername(final String name) {
 		try {
-			TypedQuery<User> query = null;
-			query = AsyncJPA.em()
-					.createQuery(
-							"SELECT u FROM User u WHERE u.username=:name",
-							User.class).setParameter("name", name);
-			List<User> users = query.getResultList();
-			if (users.size() == 0) {
-				throw new Exception(
-						"Es existiert kein Benutzer mit dem Nutzernamen "
-								+ name + ".");
+			try {
+				return JPA.withTransaction(new Function0<User>() {
+					@Override
+					public User apply() throws Throwable {
+						TypedQuery<User> query = null;
+						if (JPA.em() == null) {
+							System.out.println("JPA em null");
+						}
+						if (JPA.em() != null) {
+							System.out.println("JPA nicht null");
+						}
+						query = JPA
+								.em()
+								.createQuery(
+										"SELECT u FROM User u WHERE u.username=:name",
+										User.class).setParameter("name", name);
+						List<User> users = query.getResultList();
+						if (users.size() == 0) {
+							throw new Exception(
+									"Es existiert kein Benutzer mit dem Nutzernamen "
+											+ name + ".");
+						}
+						if (users.size() > 1) {
+							throw new Exception(
+									"Es existiert mehrere Benutzer mit dem Nutzernamen "
+											+ name + ".");
+						}
+						return users.get(0);
+					}
+				});
+			} catch (Throwable e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 
-			return users.get(0);
-		}
-		catch(Exception e) {
-			
+		} catch (Exception e) {
+
 		}
 		return null;
 	}
@@ -52,29 +75,71 @@ public class UserRepository implements CrudRepository<User> {
 	 * @param id
 	 * @return
 	 */
-	@AsyncTransactional
+	@Transactional
 	public User findById(Long id) {
-		return AsyncJPA.em().find(User.class, id);
+		try {
+			return (User) JPA.withTransaction(new Function0<User>() {
+				@Override
+				public User apply() throws Throwable {
+					return JPA.em().find(User.class, id);
+				}
+			});
+		} catch (Throwable e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
-	@AsyncTransactional
+	@Transactional
 	public void persist(User entity) {
-		AsyncJPA.em().persist(entity);
+		try {
+			JPA.withTransaction(new Callback0() {
+
+				@Override
+				public void invoke() throws Throwable {
+					JPA.em().persist(entity);
+				}
+			});
+		} catch (Throwable e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
-	@AsyncTransactional
-	public List<User> findAllUsers() {
-		TypedQuery<User> query = null;
-		query = (TypedQuery<User>) AsyncJPA.em().createQuery(
-				"SELECT u FROM User u", User.class);
-		List<User> users = query.getResultList();
-
-		return users;
+	@Transactional
+	public void addUserToContactList(User u, User... contact) {
+		User user = UserRepository.getInstance().findById(u.getId());
+		for (User a : contact) {
+			user.addToContactList(a);
+		}
+		JPA.withTransaction(new Callback0() {
+			@Override
+			public void invoke() throws Throwable {
+				JPA.em().merge(user);
+			}
+		});
 	}
-
-	@Override
+	
+	@Transactional
 	public List<User> findAll() {
-		// TODO Auto-generated method stub
+		try {
+			return (List<User>) JPA
+					.withTransaction(new Function0<List<User>>() {
+						@Override
+						public List<User> apply() throws Throwable {
+							TypedQuery<User> query = null;
+							query = (TypedQuery<User>) JPA.em().createQuery(
+									"SELECT u FROM User u", User.class);
+							List<User> users = query.getResultList();
+
+							return users;
+						}
+					});
+		} catch (Throwable e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 }
