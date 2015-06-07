@@ -108,15 +108,18 @@ public class UserRepository implements CrudRepository<User> {
 	}
 	
 	@Transactional
-	public void addUserToContactList(User u, User... contact) {
-		User user = UserRepository.getInstance().findById(u.getId());
-		for (User a : contact) {
-			user.addToContactList(a);
-		}
+	public void addUserToContactList(String username, Long contactid) {
+		User user = UserRepository.getInstance().findByUsername(username);
+		User contact = UserRepository.getInstance().findById(contactid);
+		
 		JPA.withTransaction(new Callback0() {
 			@Override
 			public void invoke() throws Throwable {
-				JPA.em().merge(user);
+				User u = JPA.em().find(User.class, user.getId());
+				User c = JPA.em().find(User.class, contact.getId());
+				u.addToContactList(c);
+				
+
 			}
 		});
 	}

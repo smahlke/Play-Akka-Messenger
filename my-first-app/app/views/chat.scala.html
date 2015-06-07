@@ -1,8 +1,10 @@
+@import helper._ 
+
 @(currentUser: User) @main("Chat") {
 
 <div class="row">
 	<br />
-	<div class="col-sm-3" >
+	<div class="col-sm-3">
 
 		<div class="panel panel-default">
 			<!-- Default panel contents -->
@@ -17,18 +19,42 @@
 		</div>
 		<div class="panel panel-default">
 			<!-- Default panel contents -->
-			<div class="panel-heading">Kontakte suchen</div>			
+			<div class="panel-heading">Kontakte suchen</div>
 		</div>
-		<select id="contacts" class="js-example-basic-single"
-			style="width: 200px"> @for(user <- Users.current()) {
-			<option value="@user.getId()">@user.getUsername()</option> }
-		</select>
-		<button type="button" class="btn btn-default btn-sm" >
-			<span class="glyphicon glyphicon-plus" />
-		</button>
-
-
+		@helper.form(action = routes.Application.addContact()) { 
+		<input type="hidden" name="contactid" id="contactid" class="input-sm" />
+		<input class="btn btn-default btn-sm glyphicon glyphicon-plus" type="submit" value="+"></input> }
 	</div>
+	<script type="text/javascript">
+		
+		$("document").ready(function() {			
+			$.ajax({
+				url : "@routes.Application.getAvailableUsers()",
+				dataType : 'json',
+				delay : 250,
+				success: function(data){
+					$('#contactid').select2({
+						data : data,
+						allowClear : true,
+						placeholder : 'Benutzer auswählen',
+						formatResult : formatPerson,
+						formatSelection : formatPerson,
+						escapeMarkup : function(markup) {
+							return markup;
+						},
+						initSelection : function(element, callback) {
+							var data = {
+								id : element.val(),
+								text : element.val()
+							};
+							callback(data);
+						}
+					});
+	            }
+			});			
+		});
+		
+	</script>
 	<div class="col-sm-9">Chat-Fenter</div>
 </div>
 

@@ -1,24 +1,31 @@
 package controllers;
 
 import static akka.pattern.Patterns.ask;
+
+import java.util.List;
+
 import models.Message;
 import models.User;
 import models.repository.MessageRepository;
 import models.repository.UserRepository;
 import play.data.DynamicForm;
 import play.data.Form;
-import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
-import play.libs.F.Callback0;
 import play.libs.F.Function;
 import play.libs.F.Promise;
+import play.libs.Json;
 import play.mvc.Controller;
+import play.mvc.Http;
 import play.mvc.Result;
 import play.mvc.Security;
 import play.mvc.With;
 import play.twirl.api.Html;
 import akka.actor.ActorSelection;
 import akka.actor.ActorSystem;
+
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @With(Users.class)
 public class Application extends Controller {
@@ -38,6 +45,24 @@ public class Application extends Controller {
 		//
 		// actorSystem.actorOf(ChatRoomActor.props(anton, sebastian),
 		// anton.getName()+sebastian.getName()+"ChatRoomActor" );
+	}
+	
+	public static Result getAvailableUsers() {
+		JsonNodeFactory nodeFactory = JsonNodeFactory.instance;
+		ArrayNode node = nodeFactory.arrayNode();
+		
+		
+		List<User> users = UserRepository.getInstance().findAll();
+		
+		for (User u : users) {
+			ObjectNode result = Json.newObject();
+			result.put("id", u.getId());
+			result.put("text", u.getLastname() + ", " + u.getFirstname());
+			result.put("disabled", false);
+			node.add(result);
+		}
+		
+		return ok(node);
 	}
 
 	@Transactional
@@ -82,8 +107,27 @@ public class Application extends Controller {
 		return ok(views.html.registSuccess.render(username));
 	}
 	
-	public static Result addUser(long userid) {
-		System.out.println("test" + userid);
+//	@Security.Authenticated(Secured.class)
+//	@Transactional
+//	public static Result addUser(long userid) {
+//		String username = Http.Context.current().session().get("username");
+//		UserRepository rep = UserRepository.getInstance();
+//		User sessionUser = rep.findByUsername(username);
+//		User contact = rep.findById(userid);
+//		rep.addUserToContactList(sessionUser, contact);
+//		System.out.println(username + userid);
+//		return noContent();
+//	}
+	
+	@Transactional
+	public static Result addContact() {
+		DynamicForm requestData = Form.form().bindFromRequest();
+		Long userid = Long.valueOf(requestData.get("contactid"));
+		
+		String username = Http.Context.current().session().get("username");
+
+		UserRepository.getInstance().addUserToContactList(username, userid);
+
 		return noContent();
 	}
 

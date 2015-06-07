@@ -22,7 +22,7 @@ public class User implements Serializable {
 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
-	@Column(name="userid", nullable=false)
+	@Column(name = "userid", nullable = false)
 	private Long id;
 	private String username;
 	private String firstname;
@@ -30,7 +30,7 @@ public class User implements Serializable {
 	private String password;
 
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinTable(name = "kontakte", joinColumns = { @JoinColumn(name = "user", referencedColumnName = "userid", nullable=false) }, inverseJoinColumns = { @JoinColumn(name = "contact", referencedColumnName = "userid", nullable=false) })
+	@JoinTable(name = "kontakte", joinColumns = { @JoinColumn(name = "user", referencedColumnName = "userid", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "contact", referencedColumnName = "userid", nullable = false) })
 	private Collection<User> contactList = new HashSet<User>();
 
 	public User() {
@@ -83,9 +83,14 @@ public class User implements Serializable {
 	public Collection<User> getContactList() {
 		return contactList;
 	}
-	
+
 	public void addToContactList(User user) {
-		this.contactList.add(user);
+		// Wird nur hinzugefügt, wenn dieser Nutzer diesen Kontakt noch nicht hat.
+		if (!this.contactList.contains(user)) {
+			if (!this.equals(user)) {
+				this.contactList.add(user);
+			}
+		}
 	}
 
 }
