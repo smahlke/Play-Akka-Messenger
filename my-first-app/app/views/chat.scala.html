@@ -1,5 +1,3 @@
-@import helper._ 
-
 @(currentUser: User) @main("Chat") {
 
 <div class="row">
@@ -9,7 +7,7 @@
 		<div class="panel panel-default">
 			<!-- Default panel contents -->
 			<div class="panel-heading">Kontakte</div>
-
+			<input id="username" type="hidden" value="@currentUser.getUsername()"></input>
 			<!-- List group -->
 			<ul class="list-group">
 				@for(user <- Users.contactList()) {
@@ -22,41 +20,100 @@
 			<div class="panel-heading">Kontakte suchen</div>
 		</div>
 		@helper.form(action = routes.Application.addContact()) { 
-		<input type="hidden" name="contactid" id="contactid" class="input-sm" />
-		<input class="btn btn-default btn-sm glyphicon glyphicon-plus" type="submit" value="+"></input> }
+		<input type="hidden" name="contactid" id="contactid" class="input-sm" /> 
+		<input class="btn btn-default btn-sm glyphicon glyphicon-plus" value="+"></input>
+		}
 	</div>
-	<script type="text/javascript">
-		
-		$("document").ready(function() {			
-			$.ajax({
-				url : "@routes.Application.getAvailableUsers()",
-				dataType : 'json',
-				delay : 250,
-				success: function(data){
-					$('#contactid').select2({
-						data : data,
-						allowClear : true,
-						placeholder : 'Benutzer auswählen',
-						formatResult : formatPerson,
-						formatSelection : formatPerson,
-						escapeMarkup : function(markup) {
-							return markup;
-						},
-						initSelection : function(element, callback) {
-							var data = {
-								id : element.val(),
-								text : element.val()
-							};
-							callback(data);
-						}
-					});
-	            }
-			});			
-		});
-		
-	</script>
-	<div class="col-sm-9">Chat-Fenter</div>
-</div>
+	<div class="col-sm-9">
+		<div class="panel panel-default">
+			<div class="panel-heading">Chat mit Benutzer xyz</div>
+			<div id="chatwindow" style="height: 300px;"></div>
+			<div class="">
+				<form id="chatform">
+					<input class="form-control" type="text" id="textinput"> </input>
+					<button type="submit" class="btn btn-default btn-sm" id="send">Send</button>
+				</form>
+			</div>
+		</div>
+	</div>
 
+</div>
+<script type="text/javascript">
+	$('#chatform').submit(function(event) {
+
+		// prevent default browser behaviour
+		event.preventDefault();
+
+	});
+	$(document).ready(function() {
+
+		$.ajax({
+			url : "@routes.Application.getAvailableUsers()",
+			dataType : 'json',
+			delay : 250,
+			success : function(data) {
+				$('#contactid').select2({
+					data : data,
+					allowClear : true,
+					placeholder : 'Benutzer auswählen',
+					formatResult : formatPerson,
+					formatSelection : formatPerson,
+					escapeMarkup : function(markup) {
+						return markup;
+					},
+					initSelection : function(element, callback) {
+						var data = {
+							id : element.val(),
+							text : element.val()
+						};
+						callback(data);
+					}
+				});
+			}
+		});
+	});
+	$(function() {
+		var WS = window['Socket'] ? Socket : WebSocket
+		var sock = new WS(
+				"@routes.Application.sockHandler().webSocketURL(request)")
+		sock.onmessage = function(event) {
+			printOnChatWindow(JSON.parse(event.data));
+		}
+		$('#send').click(function() {
+			var textToSend = $("#textinput").val();
+			var json = {
+				text : textToSend,
+				source : $("#username").val(),
+				destination : "someContact",
+				timestamp : new Date()
+			}
+			textToSend = JSON.stringify(json);
+			sock.send(textToSend);
+			$("#textinput").val("");
+			printOnChatWindow(json);
+		});
+	})
+	
+	function printOnChatWindow(json) {
+		var chatzeile = json.text + "<br/>";
+		$('#chatwindow').append(json.source + ": " + chatzeile)
+	}
+	
+	function formatPerson(data) {
+		console.log(data);
+		if (!data.id) {
+			return data.text; // Optionsgruppe
+		}
+
+		var icon = 'fa fa-user fa-lg';
+
+		if (data.disabled == true) {
+			icon = 'fa fa-user-times fa-lg';
+		}
+
+		return '<span class="' + icon + '" aria-hidden="true"></span> '
+				+ data.text;
+	}
+</script>
 
 }

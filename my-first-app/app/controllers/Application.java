@@ -2,15 +2,18 @@ package controllers;
 
 import static akka.pattern.Patterns.ask;
 
+import java.io.IOException;
 import java.util.List;
 
 import models.Message;
 import models.User;
 import models.repository.MessageRepository;
 import models.repository.UserRepository;
+import play.Logger;
 import play.data.DynamicForm;
 import play.data.Form;
 import play.db.jpa.Transactional;
+import play.libs.F.Callback;
 import play.libs.F.Function;
 import play.libs.F.Promise;
 import play.libs.Json;
@@ -18,18 +21,22 @@ import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
 import play.mvc.Security;
+import play.mvc.WebSocket;
 import play.mvc.With;
 import play.twirl.api.Html;
 import akka.actor.ActorSelection;
 import akka.actor.ActorSystem;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @With(Users.class)
 public class Application extends Controller {
-	
+
 	final static Form<User> userForm = Form.form(User.class);
 
 	static ActorSystem actorSystem = ActorSystem.create("play");
@@ -46,14 +53,32 @@ public class Application extends Controller {
 		// actorSystem.actorOf(ChatRoomActor.props(anton, sebastian),
 		// anton.getName()+sebastian.getName()+"ChatRoomActor" );
 	}
-	
+
+	public static WebSocket<JsonNode> sockHandler() {
+		return new WebSocket<JsonNode>() {
+			// called when the websocket is established
+			public void onReady(WebSocket.In<JsonNode> in,
+					WebSocket.Out<JsonNode> out) {
+				// register a callback for processing instream events
+				in.onMessage(new Callback<JsonNode>() {
+					public void invoke(JsonNode json) {
+
+						out.write(json);
+						Logger.info(json.toString());
+					}
+				});
+				// write out a greeting
+				//out.write("I'm contacting you regarding your recent websocket.");
+			}
+		};
+	}
+
 	public static Result getAvailableUsers() {
 		JsonNodeFactory nodeFactory = JsonNodeFactory.instance;
 		ArrayNode node = nodeFactory.arrayNode();
-		
-		
+
 		List<User> users = UserRepository.getInstance().findAll();
-		
+
 		for (User u : users) {
 			ObjectNode result = Json.newObject();
 			result.put("id", u.getId());
@@ -61,7 +86,7 @@ public class Application extends Controller {
 			result.put("disabled", false);
 			node.add(result);
 		}
-		
+
 		return ok(node);
 	}
 
@@ -69,32 +94,33 @@ public class Application extends Controller {
 	public static Result index() {
 		return ok(views.html.index.render("Your new application is ready."));
 	}
-	
+
 	@Security.Authenticated(Secured.class)
 	public static Result chat() {
-		return ok(views.html.chat.render(UserRepository.getInstance().findByUsername(session().get("username"))));
+		return ok(views.html.chat.render(UserRepository.getInstance()
+				.findByUsername(session().get("username"))));
 	}
 
 	public static Result registForm() {
 		return ok(views.html.registForm.render(userForm));
 	}
-	
+
 	public static Result loginForm() {
 		return ok(views.html.login.render(userForm));
 	}
 
 	@Transactional
 	public static Result submit() {
-	   Form<User> filledForm = userForm.bindFromRequest();
-	   User created = new User();
-	   DynamicForm requestData = Form.form().bindFromRequest();
-	    created.setFirstname(requestData.get("firstname"));
-	    created.setLastname(requestData.get("lastname"));
-	    created.setUsername(requestData.get("username"));
-	    created.setPassword(requestData.get("password"));
-	   UserRepository.getInstance().persist(created);
-	   return ok(views.html.submit.render(created));
-   }
+		Form<User> filledForm = userForm.bindFromRequest();
+		User created = new User();
+		DynamicForm requestData = Form.form().bindFromRequest();
+		created.setFirstname(requestData.get("firstname"));
+		created.setLastname(requestData.get("lastname"));
+		created.setUsername(requestData.get("username"));
+		created.setPassword(requestData.get("password"));
+		UserRepository.getInstance().persist(created);
+		return ok(views.html.submit.render(created));
+	}
 
 	/**
 	 * Wird vom Registrierungsformular aufgerufen.
@@ -106,24 +132,24 @@ public class Application extends Controller {
 
 		return ok(views.html.registSuccess.render(username));
 	}
-	
-//	@Security.Authenticated(Secured.class)
-//	@Transactional
-//	public static Result addUser(long userid) {
-//		String username = Http.Context.current().session().get("username");
-//		UserRepository rep = UserRepository.getInstance();
-//		User sessionUser = rep.findByUsername(username);
-//		User contact = rep.findById(userid);
-//		rep.addUserToContactList(sessionUser, contact);
-//		System.out.println(username + userid);
-//		return noContent();
-//	}
-	
+
+	// @Security.Authenticated(Secured.class)
+	// @Transactional
+	// public static Result addUser(long userid) {
+	// String username = Http.Context.current().session().get("username");
+	// UserRepository rep = UserRepository.getInstance();
+	// User sessionUser = rep.findByUsername(username);
+	// User contact = rep.findById(userid);
+	// rep.addUserToContactList(sessionUser, contact);
+	// System.out.println(username + userid);
+	// return noContent();
+	// }
+
 	@Transactional
 	public static Result addContact() {
 		DynamicForm requestData = Form.form().bindFromRequest();
 		Long userid = Long.valueOf(requestData.get("contactid"));
-		
+
 		String username = Http.Context.current().session().get("username");
 
 		UserRepository.getInstance().addUserToContactList(username, userid);
@@ -138,31 +164,32 @@ public class Application extends Controller {
 		DynamicForm requestData = Form.form().bindFromRequest();
 		try {
 			System.out.println("Nutzername " + requestData.get("username"));
-			
-			
-			User user = UserRepository.getInstance().findByUsername(requestData.get("username"));
-			//JPA.em().find(User.class, primaryKey)
+
+			User user = UserRepository.getInstance().findByUsername(
+					requestData.get("username"));
+			// JPA.em().find(User.class, primaryKey)
 			System.out.println("User Daten: " + user);
 			String enteredPassword = requestData.get("password");
 			if (user.getPassword().equals(enteredPassword)) {
 				session("username", user.getUsername());
-//				User contact = UserRepository.getInstance().findByUsername("lalu");
-//				UserRepository.getInstance().addUserToContactList(user, contact);
-				//user.addUserToContactList(contact);
-//				JPA.withTransaction(new Callback0() {
-//					@Override
-//					public void invoke() throws Throwable {
-//						JPA.em().merge(user);
-//					}
-//				});
+				// User contact =
+				// UserRepository.getInstance().findByUsername("lalu");
+				// UserRepository.getInstance().addUserToContactList(user,
+				// contact);
+				// user.addUserToContactList(contact);
+				// JPA.withTransaction(new Callback0() {
+				// @Override
+				// public void invoke() throws Throwable {
+				// JPA.em().merge(user);
+				// }
+				// });
 				return ok(views.html.chat.render(user));
 			} else {
 				return ok(views.html.registForm.render(userForm));
 			}
-			
-			
+
 		} catch (Exception e) {
-			
+
 			e.printStackTrace();
 			return ok(views.html.errorPage.render(e.getMessage()));
 		}
@@ -215,7 +242,8 @@ public class Application extends Controller {
 		// m.setDestination(u);
 		// JPA.em().persist(m);
 
-		return ok(views.html.main.render("Some Title", Html.apply("<span> bla </span>")));
+		return ok(views.html.main.render("Some Title",
+				Html.apply("<span> bla </span>")));
 	}
 
 	@Transactional
