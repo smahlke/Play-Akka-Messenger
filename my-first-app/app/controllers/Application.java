@@ -7,18 +7,22 @@ import models.repository.MessageRepository;
 import models.repository.UserRepository;
 import play.data.DynamicForm;
 import play.data.Form;
+import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
+import play.libs.F.Callback;
+import play.libs.F.Callback0;
 import play.libs.F.Function;
 import play.libs.F.Promise;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
+import play.mvc.WebSocket;
 import play.mvc.With;
 import play.twirl.api.Html;
-import views.html.index;
-import views.html.main;
 import akka.actor.ActorSelection;
 import akka.actor.ActorSystem;
+import play.*;
+import play.mvc.*;
 
 @With(Users.class)
 public class Application extends Controller {
@@ -39,10 +43,28 @@ public class Application extends Controller {
 		// actorSystem.actorOf(ChatRoomActor.props(anton, sebastian),
 		// anton.getName()+sebastian.getName()+"ChatRoomActor" );
 	}
+	
+	
+	public static WebSocket<String> sockHandler() {
+		return new WebSocket<String>() {
+		// called when the websocket is established
+		public void onReady(WebSocket.In<String> in, WebSocket.Out<String> out) {
+		// register a callback for processing instream events
+		in.onMessage(new Callback<String>() {
+		public void invoke(String event) {
+		out.write(event);
+		Logger.info(event);
+		}
+		});		 
+		// write out a greeting
+		out.write("I'm contacting you regarding your recent websocket.");
+		}	
+		};	
+		}
 
 	@Transactional
 	public static Result index() {
-		return ok(index.render("Your new application is ready."));
+		return ok(views.html.index.render("Your new application is ready."));
 	}
 	
 	@Security.Authenticated(Secured.class)
@@ -81,6 +103,11 @@ public class Application extends Controller {
 
 		return ok(views.html.registSuccess.render(username));
 	}
+	
+	public static Result addUser(long userid) {
+		System.out.println("test" + userid);
+		return noContent();
+	}
 
 	@Transactional
 	public static Result login() {
@@ -88,11 +115,24 @@ public class Application extends Controller {
 		Form<User> filledForm = userForm.bindFromRequest();
 		DynamicForm requestData = Form.form().bindFromRequest();
 		try {
+			System.out.println("Nutzername " + requestData.get("username"));
+			
+			
 			User user = UserRepository.getInstance().findByUsername(requestData.get("username"));
-			if (user.getPassword().equals(requestData.get("password"))) {
+			//JPA.em().find(User.class, primaryKey)
+			System.out.println("User Daten: " + user);
+			String enteredPassword = requestData.get("password");
+			if (user.getPassword().equals(enteredPassword)) {
 				session("username", user.getUsername());
-				User contact = UserRepository.getInstance().findByUsername("lalu");
-				user.addUserToContactList(contact);
+//				User contact = UserRepository.getInstance().findByUsername("lalu");
+//				UserRepository.getInstance().addUserToContactList(user, contact);
+				//user.addUserToContactList(contact);
+//				JPA.withTransaction(new Callback0() {
+//					@Override
+//					public void invoke() throws Throwable {
+//						JPA.em().merge(user);
+//					}
+//				});
 				return ok(views.html.chat.render(user));
 			} else {
 				return ok(views.html.registForm.render(userForm));
@@ -153,12 +193,12 @@ public class Application extends Controller {
 		// m.setDestination(u);
 		// JPA.em().persist(m);
 
-		return ok(main.render("Some Title", Html.apply("<span> bla </span>")));
+		return ok(views.html.main.render("Some Title", Html.apply("<span> bla </span>")));
 	}
 
 	@Transactional
 	public static Result trivial(String name) {
-		return ok(main
+		return ok(views.html.main
 				.render("Title",
 						Html.apply(""
 								+ MessageRepository.getInstance().findAll()
