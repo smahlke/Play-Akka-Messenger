@@ -8,6 +8,7 @@
 			<!-- Default panel contents -->
 			<div class="panel-heading">Kontakte</div>
 			<input id="username" type="hidden" value="@currentUser.getUsername()"></input>
+			<input id="currentChatPartner" type="hidden" value="abuzik"></input>
 			
 			<!-- List group -->
 			<ul class="list-group">
@@ -22,7 +23,7 @@
 		</div>
 		@helper.form(action = routes.Application.addContact()) { 
 		<input type="hidden" name="contactid" id="contactid" class="input-sm" /> 
-		<input class="btn btn-default btn-sm glyphicon glyphicon-plus" value="+"></input>
+		<input type="submit" class="btn btn-default btn-sm glyphicon glyphicon-plus" value="+"></input>
 		}
 	</div>
 	<div class="col-sm-9">
@@ -49,7 +50,7 @@
 	$(document).ready(function() {
 
 		$.ajax({
-			url : "@routes.Application.getAvailableUsers(1)",
+			url : "@routes.Application.getAvailableUsers()",
 			dataType : 'json',
 			delay : 250,
 			success : function(data) {
@@ -77,14 +78,15 @@
 		var WS = window['Socket'] ? Socket : WebSocket
 		var sock = new WS("@routes.Application.sockHandler().webSocketURL(request)")
 		sock.onmessage = function(event) {
+			console.log(event);
 			printOnChatWindow(JSON.parse(event.data));
 		}
 		$('#send').click(function() {
 			var textToSend = $("#textinput").val();
 			var json = {
-				text : textToSend,
+				message : textToSend,
 				source : $("#username").val(),
-				destination : "smahlke",
+				destination : $("#currentChatPartner").val(),
 				timestamp : new Date()
 			}
 			textToSend = JSON.stringify(json);
@@ -95,7 +97,7 @@
 	})
 	
 	function printOnChatWindow(json) {
-		var chatzeile = json.text + "<br/>";
+		var chatzeile = json.message + "<br/>";
 		$('#chatwindow').append(json.source + ": " + chatzeile)
 	}
 	

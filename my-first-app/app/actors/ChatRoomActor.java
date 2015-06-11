@@ -1,26 +1,26 @@
 package actors;
 
+import java.io.IOException;
+import java.util.Date;
+
+import models.ActorReferenceHolder;
 import models.Message;
 import models.User;
+import models.repository.MessageRepository;
 import models.repository.UserRepository;
+import play.libs.Json;
 import akka.actor.ActorRef;
 import akka.actor.Props;
 import akka.actor.UntypedActor;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import controllers.Application;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class ChatRoomActor extends UntypedActor {
-
-	// private User a;
-	// private User b;
-	//
-	// public ChatRoomActor(User a, User b) {
-	// this.a = a;
-	// this.b = b;
-	// }
 
 	public static Props props(ActorRef out) {
 		return Props.create(ChatRoomActor.class, out);
@@ -28,71 +28,56 @@ public class ChatRoomActor extends UntypedActor {
 
 	private final ActorRef out;
 
-	// private final ActorRef router;
-
 	public ChatRoomActor(ActorRef out) {
 		this.out = out;
-		// this.router= getContext().actorSelection("");
 	}
 
 	// @Override
 	// public void preStart() {
-	// router.tell(new Message(), getSelf());
+	// out.tell("You are connected.", getSelf());
 	// }
+
+	public Message translateToMessage(String string)
+			throws JsonProcessingException, IOException {
+
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode jsonNode = mapper.readTree(string);
+
+		Message m = new Message();
+		User destinationUser = UserRepository.getInstance().findByUsername(
+				jsonNode.get("destination").asText());
+		m.setDestination(destinationUser);
+		m.setSource(UserRepository.getInstance().findByUsername(
+				jsonNode.get("source").asText()));
+		m.setMessage(jsonNode.get("message").asText());
+		m.setTimestamp(new Date());
+		return m;
+	}
+
+	public ObjectNode translateToObjectNode(Message m) {
+		// generate json output
+		ObjectNode result = Json.newObject();
+		result.put("message", m.getMessage());
+		result.put("source", m.getSource().getUsername());
+		result.put("destination", m.getDestination().getUsername());
+		result.put("timestamp", m.getTimestamp().toString());
+		return result;
+	}
 
 	@Override
 	public void onReceive(Object message) throws Exception {
 		if (message instanceof String) {
 
-		String jsonMessage = (String)message;
-		ObjectMapper mapper = new ObjectMapper();
-		JsonNode jsonNode = mapper.readTree(jsonMessage);
-			Message m = new Message();
+			Message m = this.translateToMessage((String) message);
 
-			User destinationUser = UserRepository.getInstance().findByUsername(
-					jsonNode.get("destination").asText());
-			m.setDestination(destinationUser);
-			m.setSource(UserRepository.getInstance().findByUsername(
-					jsonNode.get("source").asText()));
-			m.setMessage(jsonNode.get("text").asText());
+			MessageRepository.getInstance().persist(m);
+
+			ObjectNode result = this.translateToObjectNode(m);
 			
-			Application.actorSystem.actorFor("");
-			// Message sichern
-			if (destinationUser.getActor() != null) {
-				destinationUser.getActor().tell(m.toString(), getSelf());
-			} else {
-				//save in Postbox of destinationUser
-			}
-			// out.tell(message, getSelf());
+			ActorRef dest = ActorReferenceHolder.getInstance().getReference(m.getDestination().getUsername());
+			dest.tell(result.toString(), getSelf());
 		} else {
 			unhandled(message);
 		}
-	} // public static Props props(final User a, final User b) {
-		// return Props.create(new Creator<ChatRoomActor>() {
-		// private static final long serialVersionUID = 1L;
-		//
-		// @Override
-		// public ChatRoomActor create() throws Exception {
-		// return new ChatRoomActor(a, b);
-		// }
-		// });
-		// }
-		//
-		// @Override
-		// public void onReceive(Object message) throws Exception {
-		// if( message instanceof Message )
-		// {
-		// Message myMessage = ( Message )message;
-		// myMessage.setMessage(myMessage.getSource().getUsername() + " says: "
-		// +
-		// myMessage.getMessage() + " to " +
-		// myMessage.getDestination().getUsername());
-		// getSender().tell( myMessage, getSelf() );
-		// }
-		// else
-		// {
-		// unhandled( message );
-		// }
-		// }
-
+	}
 }

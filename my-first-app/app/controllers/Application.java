@@ -4,6 +4,7 @@ import static akka.pattern.Patterns.ask;
 
 import java.util.List;
 
+import models.ActorReferenceHolder;
 import models.Message;
 import models.User;
 import models.repository.MessageRepository;
@@ -58,9 +59,15 @@ public class Application extends Controller {
 	    return WebSocket.withActor(new Function<ActorRef, Props>() {
 	        public Props apply(ActorRef out) throws Throwable {
 	        	// user aus session holen und "out" als ActorRef an User speichern
-	    		User user = UserRepository.getInstance().findByUsername(username);
-	    		out.path().name();
-	    		//UserRepository.getInstance().setActorRefAtUser(user, out);
+	    		//User user = UserRepository.getInstance().findByUsername(username);
+	    		//akka://localhost:8080/system/websockets/35#1923723979
+//	    		String address = out.path().address().host().toString();
+//	    		String port = out.path().address().port().toString();
+//	    		String string = out.path().toSerializationFormat();
+//	    		System.out.println(string);
+	    		
+//	    		UserRepository.getInstance().setActorRefAtUser(user, string);
+	        	ActorReferenceHolder.getInstance().addReference(username, out);
 	        	return ChatRoomActor.props(out);
 	        }
 	    });
@@ -89,7 +96,7 @@ public class Application extends Controller {
 //		return ws;
 //	}
 
-	public static Result getAvailableUsers(Long id) {
+	public static Result getAvailableUsers() {
 		JsonNodeFactory nodeFactory = JsonNodeFactory.instance;
 		ArrayNode node = nodeFactory.arrayNode();
 

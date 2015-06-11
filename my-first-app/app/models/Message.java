@@ -1,17 +1,14 @@
 package models;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
-import javax.persistence.Query;
 import javax.validation.constraints.NotNull;
-
-import play.db.jpa.JPA;
 
 
 @Entity
@@ -37,13 +34,24 @@ public class Message implements Serializable {
 	@OneToOne
 	private User destination;
 	
+	private Date timestamp;
+	
 	private boolean receivedOnServer; // empfangen
 	private boolean receivedOnClient; // gelesen
+
+	public Date getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(Date timestamp) {
+		this.timestamp = timestamp;
+	}
 
 	public Message(String message) {
 		this.message = message;
 		this.receivedOnClient = false;
 		this.receivedOnServer = false;
+		this.timestamp = new Date();
 	}
 	
 	public Message() {
@@ -57,6 +65,7 @@ public class Message implements Serializable {
 		this.message = message;
 		this.receivedOnClient = false;
 		this.receivedOnServer = false;
+		this.timestamp = new Date();
 	}
 
 	public Long getId() {

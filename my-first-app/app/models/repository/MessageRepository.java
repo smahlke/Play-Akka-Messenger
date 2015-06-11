@@ -6,6 +6,7 @@ import javax.persistence.Query;
 
 import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
+import play.libs.F.Callback0;
 import models.Message;
 
 public class MessageRepository implements CrudRepository<Message> {
@@ -35,7 +36,18 @@ public class MessageRepository implements CrudRepository<Message> {
 	@Transactional
 	@Override
 	public void persist(Message entity) {
-		JPA.em().persist(entity);
+		try {
+			JPA.withTransaction(new Callback0() {
+
+				@Override
+				public void invoke() throws Throwable {
+					JPA.em().persist(entity);
+				}
+			});
+		} catch (Throwable e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
 	}
 
 	@Override

@@ -32,9 +32,6 @@ public class User implements Serializable {
 	private String lastname;
 	private String password;
 	
-	@OneToOne(cascade=CascadeType.ALL)
-	ActorRef actor;
-
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "kontakte", joinColumns = { @JoinColumn(name = "user", referencedColumnName = "userid", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "contact", referencedColumnName = "userid", nullable = false) })
 	private Collection<User> contactList = new HashSet<User>();
@@ -44,14 +41,6 @@ public class User implements Serializable {
 
 	public User(String name) {
 		this.username = name;
-	}
-	
-	public ActorRef getActor() {
-		return actor;
-	}
-
-	public void setActor(ActorRef actor) {
-		this.actor = actor;
 	}
 
 	public String getUsername() {

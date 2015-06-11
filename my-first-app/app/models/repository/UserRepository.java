@@ -124,18 +124,7 @@ public class UserRepository implements CrudRepository<User> {
 			}
 		});
 	}
-	
-	@Transactional
-	public void setActorRefAtUser(User user, ActorRef ref) {
-		JPA.withTransaction(new Callback0() {
-			@Override
-			public void invoke() throws Throwable {
-				User u = JPA.em().find(User.class, user.getId());
-				u.setActor(ref);
-			}
-		});
-	}
-	
+
 	@Transactional
 	public List<User> findAll() {
 		try {
