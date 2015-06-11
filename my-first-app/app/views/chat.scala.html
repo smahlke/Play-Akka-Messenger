@@ -8,6 +8,7 @@
 			<!-- Default panel contents -->
 			<div class="panel-heading">Kontakte</div>
 			<input id="username" type="hidden" value="@currentUser.getUsername()"></input>
+			
 			<!-- List group -->
 			<ul class="list-group">
 				@for(user <- Users.contactList()) {
@@ -48,7 +49,7 @@
 	$(document).ready(function() {
 
 		$.ajax({
-			url : "@routes.Application.getAvailableUsers()",
+			url : "@routes.Application.getAvailableUsers(1)",
 			dataType : 'json',
 			delay : 250,
 			success : function(data) {
@@ -74,8 +75,7 @@
 	});
 	$(function() {
 		var WS = window['Socket'] ? Socket : WebSocket
-		var sock = new WS(
-				"@routes.Application.sockHandler().webSocketURL(request)")
+		var sock = new WS("@routes.Application.sockHandler().webSocketURL(request)")
 		sock.onmessage = function(event) {
 			printOnChatWindow(JSON.parse(event.data));
 		}
@@ -84,7 +84,7 @@
 			var json = {
 				text : textToSend,
 				source : $("#username").val(),
-				destination : "someContact",
+				destination : "smahlke",
 				timestamp : new Date()
 			}
 			textToSend = JSON.stringify(json);

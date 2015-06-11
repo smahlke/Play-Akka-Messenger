@@ -14,6 +14,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
+
+import akka.actor.ActorRef;
 
 @Entity
 public class User implements Serializable {
@@ -28,6 +31,9 @@ public class User implements Serializable {
 	private String firstname;
 	private String lastname;
 	private String password;
+	
+	@OneToOne(cascade=CascadeType.ALL)
+	ActorRef actor;
 
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "kontakte", joinColumns = { @JoinColumn(name = "user", referencedColumnName = "userid", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "contact", referencedColumnName = "userid", nullable = false) })
@@ -38,6 +44,14 @@ public class User implements Serializable {
 
 	public User(String name) {
 		this.username = name;
+	}
+	
+	public ActorRef getActor() {
+		return actor;
+	}
+
+	public void setActor(ActorRef actor) {
+		this.actor = actor;
 	}
 
 	public String getUsername() {

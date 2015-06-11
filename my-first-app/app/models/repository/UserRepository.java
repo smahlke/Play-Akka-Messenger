@@ -9,6 +9,7 @@ import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
 import play.libs.F.Callback0;
 import play.libs.F.Function0;
+import akka.actor.ActorRef;
 
 public class UserRepository implements CrudRepository<User> {
 
@@ -120,6 +121,17 @@ public class UserRepository implements CrudRepository<User> {
 				u.addToContactList(c);
 				
 
+			}
+		});
+	}
+	
+	@Transactional
+	public void setActorRefAtUser(User user, ActorRef ref) {
+		JPA.withTransaction(new Callback0() {
+			@Override
+			public void invoke() throws Throwable {
+				User u = JPA.em().find(User.class, user.getId());
+				u.setActor(ref);
 			}
 		});
 	}

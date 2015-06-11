@@ -30,4 +30,5 @@ public class Users extends Action.Simple {
 		User user = UserRepository.getInstance().findByUsername(username);
 		return user.getContactList();
     }
+
 }
