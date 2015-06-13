@@ -58,43 +58,11 @@ public class Application extends Controller {
 
 	    return WebSocket.withActor(new Function<ActorRef, Props>() {
 	        public Props apply(ActorRef out) throws Throwable {
-	        	// user aus session holen und "out" als ActorRef an User speichern
-	    		//User user = UserRepository.getInstance().findByUsername(username);
-	    		//akka://localhost:8080/system/websockets/35#1923723979
-//	    		String address = out.path().address().host().toString();
-//	    		String port = out.path().address().port().toString();
-//	    		String string = out.path().toSerializationFormat();
-//	    		System.out.println(string);
-	    		
-//	    		UserRepository.getInstance().setActorRefAtUser(user, string);
 	        	ActorReferenceHolder.getInstance().addReference(username, out);
 	        	return ChatRoomActor.props(out);
 	        }
 	    });
 	}
-
-//	public static WebSocket<JsonNode> sockHandler() {
-//		WebSocket<JsonNode> ws = new WebSocket<JsonNode>() {
-//			
-//			private User user;
-//			// called when the websocket is established
-//			public void onReady(WebSocket.In<JsonNode> in,
-//					WebSocket.Out<JsonNode> out) {
-//				// register a callback for processing instream events
-//				in.onMessage(new Callback<JsonNode>() {
-//					public void invoke(JsonNode json) {
-//
-//						out.write(json);
-//						Logger.info(json.toString());
-//					}
-//				});
-//				
-//				// write out a greeting
-//				// out.write("I'm contacting you regarding your recent websocket.");
-//			}
-//		};
-//		return ws;
-//	}
 
 	public static Result getAvailableUsers() {
 		JsonNodeFactory nodeFactory = JsonNodeFactory.instance;
@@ -156,18 +124,6 @@ public class Application extends Controller {
 		return ok(views.html.registSuccess.render(username));
 	}
 
-	// @Security.Authenticated(Secured.class)
-	// @Transactional
-	// public static Result addUser(long userid) {
-	// String username = Http.Context.current().session().get("username");
-	// UserRepository rep = UserRepository.getInstance();
-	// User sessionUser = rep.findByUsername(username);
-	// User contact = rep.findById(userid);
-	// rep.addUserToContactList(sessionUser, contact);
-	// System.out.println(username + userid);
-	// return noContent();
-	// }
-
 	@Transactional
 	public static Result addContact() {
 		DynamicForm requestData = Form.form().bindFromRequest();
@@ -195,7 +151,7 @@ public class Application extends Controller {
 			String enteredPassword = requestData.get("password");
 			if (user.getPassword().equals(enteredPassword)) {
 				session("username", user.getUsername());
-				return ok(views.html.chat.render(user));
+				return redirect("/chat");
 			} else {
 				return ok(views.html.registForm.render(userForm));
 			}
