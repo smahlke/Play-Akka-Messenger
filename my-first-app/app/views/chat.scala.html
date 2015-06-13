@@ -130,6 +130,9 @@
 		}
 		$('#send').click(function() {
 			var textToSend = $("#textinput").val();
+			if (textToSend == '') {
+				return;
+			}
 			var json = {
 				message : textToSend,
 				source : $("#username").val(),
