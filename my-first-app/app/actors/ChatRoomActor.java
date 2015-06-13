@@ -70,12 +70,17 @@ public class ChatRoomActor extends UntypedActor {
 
 			Message m = this.translateToMessage((String) message);
 
-			MessageRepository.getInstance().persist(m);
-
 			ObjectNode result = this.translateToObjectNode(m);
 			
 			ActorRef dest = ActorReferenceHolder.getInstance().getReference(m.getDestination().getUsername());
-			dest.tell(result.toString(), getSelf());
+			if (dest != null) {
+				dest.tell(result.toString(), getSelf());
+				//sollte von Client bestätigt werden
+				m.setReceivedOnClient(true);
+			} else {
+				m.setReceivedOnClient(false);
+			}
+			MessageRepository.getInstance().persist(m);
 		} else {
 			unhandled(message);
 		}

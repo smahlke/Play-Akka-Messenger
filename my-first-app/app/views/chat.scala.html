@@ -1,4 +1,6 @@
-@(currentUser: User) @main("Chat") {
+@(currentUser: User) 
+
+@main("Chat") {
 
 <div class="row">
 	<br />
@@ -8,39 +10,56 @@
 			<!-- Default panel contents -->
 			<div class="panel-heading">Kontakte</div>
 			<input id="username" type="hidden" value="@currentUser.getUsername()"></input>
-			<input id="currentChatPartner" type="hidden" value="abuzik"></input>
-			
+			<input id="currentChatPartner" type="hidden" value=""></input>
+
 			<!-- List group -->
-			<ul class="list-group">
+			<ul class="list-group" id="contacts">
 				@for(user <- Users.contactList()) {
-				<li class="list-group-item"><a href="#">@user.getUsername()</a></li>
-				}
+				<li class="list-group-item" id="@user.getUsername()"><a
+					href="#">@user.getUsername()</a></li> }
 			</ul>
 		</div>
 		<div class="panel panel-default">
 			<!-- Default panel contents -->
 			<div class="panel-heading">Kontakte suchen</div>
 		</div>
-		@helper.form(action = routes.Application.addContact()) { 
-		<input type="hidden" name="contactid" id="contactid" class="input-sm" /> 
-		<input type="submit" class="btn btn-default btn-sm glyphicon glyphicon-plus" value="+"></input>
-		}
+		@helper.form(action = routes.Application.addContact()) { <input
+			type="hidden" name="contactid" id="contactid" class="input-sm" /> <input
+			type="submit" class="btn btn-default btn-sm glyphicon glyphicon-plus"
+			value="+"></input> }
 	</div>
 	<div class="col-sm-9">
 		<div class="panel panel-default">
-			<div class="panel-heading">Chat mit Benutzer xyz</div>
-			<div id="chatwindow" style="height: 300px;"></div>
-			<div class="">
-				<form id="chatform">
+			<div class="panel-heading">
+				<span id="chatWindowTitle"></span>
+			</div>
+			<div class="panel-body" style="height: 300px;">
+				<div id="chatwindow" style="height: 150px; overflow-y: auto;"></div>
+				<hr id="trenner" style="height: 11px;"></hr>
+
+				<form id="chatform" style="height: 64px">
 					<input class="form-control" type="text" id="textinput"> </input>
-					<button type="submit" class="btn btn-default btn-sm" id="send">Send</button>
+					<button type="submit" class="btn btn-default btn-sm col-sm-12" id="send"><b>Senden</b></button>
 				</form>
 			</div>
+
+
 		</div>
 	</div>
 
 </div>
 <script type="text/javascript">
+	$("#contacts li").click(function() {
+		$("#currentChatPartner").val(this.id);
+		setChatWindowTitle();
+		console.log($("#currentChatPartner").val());
+	});
+
+	function setChatWindowTitle() {
+		document.getElementById('chatWindowTitle').innerHTML = "Chat mit Benutzer "
+				+ $('#currentChatPartner').val();
+	}
+
 	$('#chatform').submit(function(event) {
 
 		// prevent default browser behaviour
@@ -76,7 +95,8 @@
 	});
 	$(function() {
 		var WS = window['Socket'] ? Socket : WebSocket
-		var sock = new WS("@routes.Application.sockHandler().webSocketURL(request)")
+		var sock = new WS(
+				"@routes.Application.sockHandler().webSocketURL(request)")
 		sock.onmessage = function(event) {
 			console.log(event);
 			printOnChatWindow(JSON.parse(event.data));
@@ -93,14 +113,19 @@
 			sock.send(textToSend);
 			$("#textinput").val("");
 			printOnChatWindow(json);
+
 		});
 	})
-	
+
 	function printOnChatWindow(json) {
 		var chatzeile = json.message + "<br/>";
 		$('#chatwindow').append(json.source + ": " + chatzeile)
+		//$('#chatwindow').scrollDown = 1000;
+		var chat_div = document.getElementById('chatwindow');
+		chat_div.scrollTop = chat_div.scrollHeight;
+
 	}
-	
+
 	function formatPerson(data) {
 		console.log(data);
 		if (!data.id) {
