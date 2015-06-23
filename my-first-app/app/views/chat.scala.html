@@ -55,6 +55,13 @@
 
 		</div>
 	</div>
+	
+	<div ng-controller="ChatController as messageList" id="chat">
+		<div ng-model="messageList.editValue" ng-change="remaining()" >
+      <span>{{messageList.editValue}} remaining</span>
+      
+      </div>
+    </div>
 
 </div>
 <script type="text/javascript">
@@ -120,15 +127,58 @@
 			}
 		});
 		
+		/*function users() {
+			console.log("ajax");
+			$.ajax({
+				url : "@routes.Application.getAvailableUsers()",
+				dataType : 'json',
+				delay : 250,
+				success : function(data) {
+					 console.log(data);
+					return data;
+				}
+			});
+		}
+		
+		function getMockData() {
+			var mock = [{
+				id :1,
+				text: "Test 1"
+			}, {
+				id :2,
+				text: "Test 2"
+			}];
+			return mock;
+		}
+		
+		$('#contactid').select2({
+			ajax: users(),
+			data : users(),
+			allowClear : true,
+			placeholder : 'Benutzer auswählen',
+			templateResult : formatPerson,
+			templateSelection : formatPerson,
+			escapeMarkup : function(markup) {
+				return markup;
+			}
+		});*/
+		
 	});
 	$(function() {
 		var WS = window['Socket'] ? Socket : WebSocket
 		var sock = new WS(
 				"@routes.Application.sockHandler().webSocketURL(request)")
 		sock.onmessage = function(event) {
+			console.log(event.data);
+			angular.element(document.getElementById('chat')).scope().messageList.addMessage(JSON.parse(event.data));
+			angular.element(document.getElementById('chat')).scope().messageList.remaining();
+
 			printOnChatWindow(JSON.parse(event.data));
 		}
 		$('#send').click(function() {
+
+			
+
 			var textToSend = $("#textinput").val();
 			if (textToSend == '') {
 				return;

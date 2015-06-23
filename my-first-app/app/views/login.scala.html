@@ -9,7 +9,7 @@
 @helper.form(action = routes.Application.login()) {
 
         @helper.inputText(userForm("username"),'_label -> "Benutzername:")
-        @helper.inputText(userForm("password"),'_label -> "Kennwort:")
+        @helper.inputPassword(userForm("password"),'_label -> "Kennwort:")
     
 	<input type="submit" value="send" />
 }
