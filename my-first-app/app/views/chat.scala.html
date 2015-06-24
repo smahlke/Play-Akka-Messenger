@@ -1,79 +1,99 @@
-@(currentUser: User) 
+@(currentUser: User)
 
 @main("Chat") {
+<div ng-controller="ChatController as messageList" id="chat">
+	<div ng-model="messageList.editValue" ng-change="remaining()">
 
-<div class="row">
-	<br />
-	<div class="col-sm-3">
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
 
-		<div class="panel panel-default">
-			<!-- Default panel contents -->
-			<div class="panel-heading">Meine Kontakte</div>
-			<input id="username" type="hidden" value="@currentUser.getUsername()"></input>
-			<input id="currentChatPartner" type="hidden" value=""></input>
+				<div class="collapse navbar-collapse"
+					id="bs-example-navbar-collapse-1">
+					<p class="navbar-text">
+						Eingeloggt als @currentUser.getFirstname()
+						@currentUser.getLastname() (<span id="username">@currentUser.getUsername()</span>)
+					</p>
+					<div class="navbar-form navbar-left">
+						@helper.form(action = routes.Application.logout()) {
+						<div class="form-group">
+							<input type="hidden" name="logout" id="logout" />
+						</div>
+						<input type="submit" id="logout" class="btn btn-default"
+							value="Log out"></input> }
+					</div>
+				</div>
+				<!-- /.navbar-collapse -->
+			</div>
+			<!-- /.container-fluid -->
 
-			<!-- List group -->
-			<ul class="list-group" id="contacts">
-				@for(user <- Users.contactList()) {
-				<li class="list-group-item" id="@user.getUsername()"><a
-					href="#">@user.getUsername()</a></li> }
-			</ul>
-		</div>
-		<div class="panel panel-default">
-			<!-- Default panel contents -->
-			<div class="panel-heading">Kontakte suchen</div>
-			<div class="panel-body">
+		</nav>
+		<div class="row">
+			<br />
+			<div class="col-sm-3">
 
-				@helper.form(action = routes.Application.addContact()) { <input
-					type="hidden" name="contactid" id="contactid" class="input-sm" />
-				<input type="submit" id="addbutton" class="btn btn-default btn-sm glyphicon glyphicon-plus disabled" value="+"></input>
-				}
+				<div class="panel panel-default">
+					<!-- Default panel contents -->
+					<div class="panel-heading">Meine Kontakte</div>
+					<input id="currentChatPartner" ng-model="messageList.chatpartner"
+						type="hidden" value=""></input>
+
+					<!-- List group -->
+					<ul class="list-group" id="contacts">
+						@for(user <- Users.contactList()) {
+						<li class="list-group-item" id="@user.getUsername()"><a
+							href="#">@user.getUsername() <span class="badge"
+								id="unread_counter">{{messageList.editValue}}</span></a></li> }
+					</ul>
+				</div>
+				<div class="panel panel-default">
+					<!-- Default panel contents -->
+					<div class="panel-heading">Kontakte suchen</div>
+					<div class="panel-body">
+
+						@helper.form(action = routes.Application.addContact()) { <input
+							type="hidden" name="contactid" id="contactid" class="input-sm" />
+						<input type="submit" id="addbutton"
+							class="btn btn-default btn-sm glyphicon glyphicon-plus disabled"
+							value="+"></input> }
+					</div>
+
+				</div>
+
+
+			</div>
+			<div class="col-sm-9">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<span>Chat mit Benutzer: {{messageList.chatpartner}}</span>
+					</div>
+					<div class="panel-body" style="height: 300px;">
+						<div id="chatwindow" style="height: 150px; overflow-y: auto;"></div>
+						<hr id="trenner" style="height: 11px;"></hr>
+
+						<form id="chatform" style="height: 64px">
+							<input class="form-control" type="text" id="textinput"> </input>
+							<button type="submit" class="btn btn-default btn-sm col-sm-12"
+								id="send">
+								<b>Senden</b>
+							</button>
+						</form>
+					</div>
+				</div>
 			</div>
 
+
 		</div>
-
-
 	</div>
-	<div class="col-sm-9">
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<span id="chatWindowTitle"></span>
-			</div>
-			<div class="panel-body" style="height: 300px;">
-				<div id="chatwindow" style="height: 150px; overflow-y: auto;"></div>
-				<hr id="trenner" style="height: 11px;"></hr>
-
-				<form id="chatform" style="height: 64px">
-					<input class="form-control" type="text" id="textinput"> </input>
-					<button type="submit" class="btn btn-default btn-sm col-sm-12"
-						id="send">
-						<b>Senden</b>
-					</button>
-				</form>
-			</div>
-
-
-		</div>
-	</div>
-	
-	<div ng-controller="ChatController as messageList" id="chat">
-		<div ng-model="messageList.editValue" ng-change="remaining()" >
-      <span>{{messageList.editValue}} remaining</span>
-      
-      </div>
-    </div>
 
 </div>
 <script type="text/javascript">
-	$("#contacts li").click(function() {
-		$("#currentChatPartner").val(this.id);
-		setChatWindowTitle();
-	});
-
-	function setChatWindowTitle() {
-		document.getElementById('chatWindowTitle').innerHTML = "Chat mit Benutzer "
-				+ $('#currentChatPartner').val();
-	}
+	$("#contacts li")
+			.click(
+					function() {
+						//$("#currentChatPartner").val(this.id);
+						angular.element(document.getElementById('chat'))
+								.scope().messageList.setChatPartner(this.id);
+					});
 
 	$('#chatform').submit(function(event) {
 
@@ -93,108 +113,143 @@
 				+ data.text;
 	}
 
-	$(document).ready(function() {
-		var $eventSelect = $('#contactid');
-		$eventSelect.on("select2:select", function (e) { 
-			   $("#addbutton").attr("class","btn btn-default btn-sm glyphicon glyphicon-plus");
-		});
-		$eventSelect.on("select2:unselect", function (e) { 
-			   $("#addbutton").attr("class","btn btn-default btn-sm glyphicon glyphicon-plus disabled");
-		});
+	$(document)
+			.ready(
+					function() {
+						var $eventSelect = $('#contactid');
+						$eventSelect
+								.on(
+										"select2:select",
+										function(e) {
+											$("#addbutton")
+													.attr("class",
+															"btn btn-default btn-sm glyphicon glyphicon-plus");
+										});
+						$eventSelect
+								.on(
+										"select2:unselect",
+										function(e) {
+											$("#addbutton")
+													.attr("class",
+															"btn btn-default btn-sm glyphicon glyphicon-plus disabled");
+										});
 
-		$.ajax({
-			url : "@routes.Application.getAvailableUsers()",
-			dataType : 'json',
-			delay : 250,
-			success : function(data) {
-				$('#contactid').select2({
-					data : data,
-					allowClear : true,
-					placeholder : 'Benutzer auswählen',
-					templateResult : formatPerson,
-					templateSelection : formatPerson,
-					escapeMarkup : function(markup) {
-						return markup;
-					},
-					initSelection : function(element, callback) {
-						var data = {
-							id : element.val(),
-							text : element.val()
-						};
-						callback(data);
-					}
-				});
-			}
-		});
-		
-		/*function users() {
-			console.log("ajax");
-			$.ajax({
-				url : "@routes.Application.getAvailableUsers()",
-				dataType : 'json',
-				delay : 250,
-				success : function(data) {
-					 console.log(data);
-					return data;
-				}
-			});
-		}
-		
-		function getMockData() {
-			var mock = [{
-				id :1,
-				text: "Test 1"
-			}, {
-				id :2,
-				text: "Test 2"
-			}];
-			return mock;
-		}
-		
-		$('#contactid').select2({
-			ajax: users(),
-			data : users(),
-			allowClear : true,
-			placeholder : 'Benutzer auswählen',
-			templateResult : formatPerson,
-			templateSelection : formatPerson,
-			escapeMarkup : function(markup) {
-				return markup;
-			}
-		});*/
-		
-	});
+						$.ajax({
+							url : "@routes.Application.getAvailableUsers()",
+							dataType : 'json',
+							delay : 250,
+							success : function(data) {
+								$('#contactid').select2(
+										{
+											data : data,
+											allowClear : true,
+											placeholder : 'Benutzer auswählen',
+											templateResult : formatPerson,
+											templateSelection : formatPerson,
+											escapeMarkup : function(markup) {
+												return markup;
+											},
+											initSelection : function(element,
+													callback) {
+												var data = {
+													id : element.val(),
+													text : element.val()
+												};
+												callback(data);
+											}
+										});
+							}
+						});
+
+						$.ajax({
+							url : "@routes.Application.loadUnreadMessages()",
+							dataType : 'json',
+							delay : 250,
+							success : function(data) {
+								for (m in data) {
+									angular.element(
+											document.getElementById('chat'))
+											.scope().messageList
+											.addMessage(data[m]);
+									angular.element(
+											document.getElementById('chat'))
+											.scope().messageList.remaining();
+									//printOnChatWindow(data[m]);
+								}
+
+							}
+						});
+
+						/*function users() {
+							console.log("ajax");
+							$.ajax({
+								url : "@routes.Application.getAvailableUsers()",
+								dataType : 'json',
+								delay : 250,
+								success : function(data) {
+									 console.log(data);
+									return data;
+								}
+							});
+						}
+						
+						function getMockData() {
+							var mock = [{
+								id :1,
+								text: "Test 1"
+							}, {
+								id :2,
+								text: "Test 2"
+							}];
+							return mock;
+						}
+						
+						$('#contactid').select2({
+							ajax: users(),
+							data : users(),
+							allowClear : true,
+							placeholder : 'Benutzer auswählen',
+							templateResult : formatPerson,
+							templateSelection : formatPerson,
+							escapeMarkup : function(markup) {
+								return markup;
+							}
+						});*/
+
+					});
 	$(function() {
 		var WS = window['Socket'] ? Socket : WebSocket
 		var sock = new WS(
 				"@routes.Application.sockHandler().webSocketURL(request)")
 		sock.onmessage = function(event) {
 			console.log(event.data);
-			angular.element(document.getElementById('chat')).scope().messageList.addMessage(JSON.parse(event.data));
-			angular.element(document.getElementById('chat')).scope().messageList.remaining();
-
-			printOnChatWindow(JSON.parse(event.data));
+			angular.element(document.getElementById('chat')).scope().messageList
+					.addMessage(JSON.parse(event.data));
+			angular.element(document.getElementById('chat')).scope().messageList
+					.remaining();
 		}
-		$('#send').click(function() {
+		$('#send')
+				.click(
+						function() {
 
-			
+							var textToSend = $("#textinput").val();
+							if (textToSend == '') {
+								return;
+							}
+							var json = {
+								message : textToSend,
+								source : $("#username").text(),
+								destination : angular.element(
+										document.getElementById('chat'))
+										.scope().messageList.getChatPartner(),
+								timestamp : new Date()
+							}
+							textToSend = JSON.stringify(json);
+							sock.send(textToSend);
+							$("#textinput").val("");
+							printOnChatWindow(json);
 
-			var textToSend = $("#textinput").val();
-			if (textToSend == '') {
-				return;
-			}
-			var json = {
-				message : textToSend,
-				source : $("#username").val(),
-				destination : $("#currentChatPartner").val(),
-				timestamp : new Date()
-			}
-			textToSend = JSON.stringify(json);
-			sock.send(textToSend);
-			$("#textinput").val("");
-			printOnChatWindow(json);
-
-		});
+						});
 	})
 
 	function printOnChatWindow(json) {

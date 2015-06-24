@@ -80,6 +80,39 @@ public class Application extends Controller {
 
 		return ok(node);
 	}
+	
+	@Security.Authenticated(Secured.class)
+	 public static Result logout() {
+	    session().clear();
+	    return ok(views.html.index.render("Your new application is ready."));
+	  }
+
+	
+	@Transactional
+	public static Result loadUnreadMessages() {
+		
+    	String username = session("username");
+    	System.out.println(username);
+		
+		JsonNodeFactory nodeFactory = JsonNodeFactory.instance;
+		ArrayNode node = nodeFactory.arrayNode();
+
+		List<Message> messages = MessageRepository.getInstance().findAllUnreadMessages(username);
+		
+		for (Message m : messages) {
+			ObjectNode result = Json.newObject();
+			result.put("message", m.getMessage());
+			result.put("source", m.getSource().getUsername());
+			result.put("destination", m.getDestination().getUsername());
+			String timestamp = "";
+			if (m.getTimestamp() != null)
+				timestamp = m.getTimestamp().toString();
+			result.put("timestamp", timestamp);
+			node.add(result);
+		}
+
+		return ok(node);
+	}
 
 	@Transactional
 	public static Result index() {
