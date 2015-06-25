@@ -4,7 +4,6 @@ import static akka.pattern.Patterns.ask;
 
 import java.util.List;
 
-import models.ActorReferenceHolder;
 import models.Message;
 import models.User;
 import models.repository.MessageRepository;
@@ -22,6 +21,7 @@ import play.mvc.Security;
 import play.mvc.WebSocket;
 import play.mvc.With;
 import play.twirl.api.Html;
+import actors.ActorReferenceHolder;
 import actors.ChatRoomActor;
 import akka.actor.ActorRef;
 import akka.actor.ActorSelection;
@@ -37,21 +37,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 public class Application extends Controller {
 
 	final static Form<User> userForm = Form.form(User.class);
-
-	public static ActorSystem actorSystem = ActorSystem.create("play");
-
-	static {
-		// Create our local actors
-		// User anton = new User("Anton");
-		// User sebastian = new User("Sebastian");
-		// anton.addUserToContactList(sebastian);
-		// sebastian.addUserToContactList(anton);
-		// UserRepository.getInstance().persist(sebastian);
-		// UserRepository.getInstance().persist(anton);
-		//
-		// actorSystem.actorOf(ChatRoomActor.props(anton, sebastian),
-		// anton.getName()+sebastian.getName()+"ChatRoomActor" );
-	}
 	
 	public static WebSocket<String> sockHandler() {
     	String username = session("username");
@@ -134,7 +119,7 @@ public class Application extends Controller {
 	}
 
 	@Transactional
-	public static Result submit() {
+	public static Result signup() {
 		Form<User> filledForm = userForm.bindFromRequest();
 		User created = new User();
 		DynamicForm requestData = Form.form().bindFromRequest();
@@ -143,18 +128,7 @@ public class Application extends Controller {
 		created.setUsername(requestData.get("username"));
 		created.setPassword(requestData.get("password"));
 		UserRepository.getInstance().persist(created);
-		return ok(views.html.submit.render(created));
-	}
-
-	/**
-	 * Wird vom Registrierungsformular aufgerufen.
-	 * 
-	 * @return
-	 */
-	public static Result regist(String username) {
-		// User anlegen
-
-		return ok(views.html.registSuccess.render(username));
+		return ok(views.html.signup.render(created));
 	}
 
 	@Transactional
@@ -190,63 +164,9 @@ public class Application extends Controller {
 			}
 
 		} catch (Exception e) {
-
 			e.printStackTrace();
 			return ok(views.html.errorPage.render(e.getMessage()));
 		}
 	}
 
-	/**
-	 * Controller action that constructs a MyMessage and sends it to our local
-	 * Hello, World actor
-	 *
-	 * @param username
-	 *            The name of the person to greet
-	 * @return The promise of a Result
-	 */
-	@Transactional
-	public static Promise<Result> localHello(String messageString) {
-
-		Message message = new Message(messageString);
-		message.setSource(new User("Anton"));
-		message.setDestination(new User("Sebastian"));
-		// MessageRepository.getInstance().persist(message);
-		// Look up the actor
-		ActorSelection myActor = actorSystem.actorSelection("user/"
-				+ message.getSource().getUsername()
-				+ message.getDestination().getUsername() + "ChatRoomActor");
-
-		// As the actor for a response to the message (and a 30 second timeout);
-		// ask returns an Akka Future, so we wrap it with a Play Promise
-		return Promise.wrap(ask(myActor, message, 30000)).map(
-				new Function<Object, Result>() {
-					public Result apply(Object response) {
-						if (response instanceof Message) {
-							Message message = (Message) response;
-							return ok(message.getMessage());
-						}
-						return notFound("Message is not of type Message");
-					}
-				});
-	}
-
-	@Transactional
-	public static Result main() {
-		return ok(views.html.main.render("Some Title",
-				Html.apply("<span> bla </span>")));
-	}
-
-	@Transactional
-	public static Result trivial(String name) {
-		return ok(views.html.main
-				.render("Title",
-						Html.apply(""
-								+ MessageRepository.getInstance().findAll()
-								+ "")));
-	}
-
-	public static Result test(String name) {
-		return ok("Hello " + name);
-
-	}
 }

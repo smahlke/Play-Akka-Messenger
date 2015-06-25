@@ -6,7 +6,7 @@
 
 
 
-@helper.form(action = routes.Application.submit()) {
+@helper.form(action = routes.Application.signup()) {
 
         @helper.inputText(userForm("firstname"),'_label -> "Vorname:")
         @helper.inputText(userForm("lastname"),'_label -> "Nachname:")
