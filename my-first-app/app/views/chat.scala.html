@@ -33,7 +33,8 @@
 
 				<div class="panel panel-default">
 					<!-- Default panel contents -->
-					<div class="panel-heading">Meine Kontakte</div>
+					<div class="panel-heading">Meine Kontakte 
+					<!--  <span class="badge"	id="unread_counter">Ungelesene Nachrichten: {{messageList.editValue}}</span>--></div>
 					<input id="currentChatPartner" ng-model="messageList.chatpartner"
 						type="hidden" value=""></input>
 
@@ -41,8 +42,8 @@
 					<ul class="list-group" id="contacts">
 						@for(user <- Users.contactList()) {
 						<li class="list-group-item" id="@user.getUsername()"><a
-							href="#">@user.getUsername() <span class="badge"
-								id="unread_counter">{{messageList.editValue}}</span></a></li> }
+							href="#">@user.getFirstname() @user.getLastname() </a></li> 
+						}
 					</ul>
 				</div>
 				<div class="panel panel-default">
@@ -90,9 +91,11 @@
 	$("#contacts li")
 			.click(
 					function() {
-						//$("#currentChatPartner").val(this.id);
 						angular.element(document.getElementById('chat'))
 								.scope().messageList.setChatPartner(this.id);
+						angular.element(document.getElementById('chat'))
+						.scope().messageList.getUnreadMessagesFromUser(this.id);
+						
 					});
 
 	$('#chatform').submit(function(event) {
@@ -116,6 +119,12 @@
 	$(document)
 			.ready(
 					function() {
+						
+						function setCurrentUser() {
+							angular.element(document.getElementById('chat')).scope().messageList
+							.setCurrentUser($("#username").val());
+						}
+						
 						var $eventSelect = $('#contactid');
 						$eventSelect
 								.on(

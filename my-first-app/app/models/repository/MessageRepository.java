@@ -79,8 +79,10 @@ public class MessageRepository implements CrudRepository<Message> {
 			JPA.withTransaction(new Callback0() {
 				@Override
 				public void invoke() throws Throwable {
+					// SELECT * FROM messenger.Message m, messenger.User u WHERE u.username = "smahlke" AND (u.userid = m.destination_userid OR u.userid = m.source_userid);
+
 					Query query = JPA.em().createQuery(
-							"SELECT m FROM Message m, User u WHERE m.source = u.id AND u.username=:name AND receivedonclient = 0").setParameter("name", username);
+							"SELECT m FROM Message m, User u WHERE u.username=:name AND (u.id = m.destination OR u.id = m.source)").setParameter("name", username); //AND receivedonclient = 0 
 					list.addAll(query.getResultList());
 					//TODO: Mark as read
 				}
