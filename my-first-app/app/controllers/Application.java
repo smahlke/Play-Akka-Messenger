@@ -74,7 +74,7 @@ public class Application extends Controller {
 
 	
 	@Transactional
-	public static Result loadUnreadMessages() {
+	public static Result loadMessages() {
 		
     	String username = session("username");
     	System.out.println(username);
@@ -82,7 +82,7 @@ public class Application extends Controller {
 		JsonNodeFactory nodeFactory = JsonNodeFactory.instance;
 		ArrayNode node = nodeFactory.arrayNode();
 
-		List<Message> messages = MessageRepository.getInstance().findAllUnreadMessages(username);
+		List<Message> messages = MessageRepository.getInstance().findAllMessages(username);
 		
 		for (Message m : messages) {
 			ObjectNode result = Json.newObject();

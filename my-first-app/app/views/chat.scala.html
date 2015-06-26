@@ -94,7 +94,7 @@
 						angular.element(document.getElementById('chat'))
 								.scope().messageList.setChatPartner(this.id);
 						angular.element(document.getElementById('chat'))
-						.scope().messageList.getUnreadMessagesFromUser(this.id);
+						.scope().messageList.getMessagesFromUser(this.id);
 						
 					});
 
@@ -171,7 +171,7 @@
 						});
 
 						$.ajax({
-							url : "@routes.Application.loadUnreadMessages()",
+							url : "@routes.Application.loadMessages()",
 							dataType : 'json',
 							delay : 250,
 							success : function(data) {
@@ -183,7 +183,6 @@
 									angular.element(
 											document.getElementById('chat'))
 											.scope().messageList.remaining();
-									//printOnChatWindow(data[m]);
 								}
 
 							}

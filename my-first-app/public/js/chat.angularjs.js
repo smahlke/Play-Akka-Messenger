@@ -38,7 +38,7 @@ angular.module('chatApp', [])
        return messageList.chatpartner;
   };
   
-  $scope.messageList.getUnreadMessagesFromUser = function(username) {
+  $scope.messageList.getMessagesFromUser = function(username) {
 	  
 	  $("#chatwindow").empty();
 	  //var newMessageList = [];

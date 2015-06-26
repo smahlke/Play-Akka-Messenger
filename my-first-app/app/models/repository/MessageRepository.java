@@ -73,7 +73,7 @@ public class MessageRepository implements CrudRepository<Message> {
 	}
 	
 	@Transactional
-	public List<Message> findAllUnreadMessages(String username) {
+	public List<Message> findAllMessages(String username) {
 		List<Message> list = new ArrayList<Message>();
 		try {
 			JPA.withTransaction(new Callback0() {
